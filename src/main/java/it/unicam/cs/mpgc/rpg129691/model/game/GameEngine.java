@@ -13,13 +13,13 @@ public class GameEngine {
     private final DungeonMap map;
     private final Player player;
     private final CombatSystem combatSystem;
-    private boolean gameOver;
-    private boolean playerWon;
+    private GameState gameState;
 
     public GameEngine(DungeonMap map, Player player) {
         this.map = map;
         this.player = player;
         this.combatSystem = new CombatSystem();
+        this.gameState = GameState.RUNNING;
     }
 
     public void movePlayer(Direction direction) {
@@ -47,32 +47,28 @@ public class GameEngine {
     private void checkEnemyRoom(Room room){
         if(room instanceof EnemyRoom enemyRoom) {
             CombatResult result = combatSystem.fight(player, enemyRoom.getEnemy());
-            if(result == CombatResult.PLAYER_DIED) {
-                gameOver = true;
-                playerWon = false;
+            for(String message : result.getCombatLog().getMessages()) {
+                System.out.println(message);
+            }
+            if(!result.hasPlayerWon()) {
+                gameState = GameState.PLAYER_LOST;
             }
         }
     }
 
     private void checkPlayerStatus() {
         if (player.getHealth() <= 0) {
-            gameOver = true;
-            playerWon = false;
+            gameState = GameState.PLAYER_LOST;
         }
     }
 
     private void checkExitRoom(Room room) {
         if(room instanceof ExitRoom) {
-            gameOver = true;
-            playerWon = true;
+            gameState = GameState.PLAYER_WON;
         }
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean hasPlayerWon() {
-        return playerWon;
+    public GameState getGameState() {
+        return gameState;
     }
 }

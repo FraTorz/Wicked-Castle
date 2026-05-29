@@ -12,32 +12,33 @@ public class CombatSystem {
         this.random = new Random();
     }
     public CombatResult fight(Player player, Enemy enemy) {
-        System.out.println("A " + enemy.getName() + " appears!");
+        CombatLog combatLog = new CombatLog();
+        combatLog.addMessage("A " + enemy.getName() + " appears!");
         while(true) {
-            playerAttack(player, enemy);
+            playerAttack(player, enemy, combatLog);
             if(!enemy.isAlive()) {
-                System.out.println(enemy.getName() + " was defeated!");
-                return CombatResult.PLAYER_WON;
+                combatLog.addMessage(enemy.getName() + " was defeated!");
+                return new CombatResult(true, combatLog);
             }
-            enemyAttack(player, enemy);
+            enemyAttack(player, enemy, combatLog);
             if(player.getHealth() <= 0) {
-                System.out.println("You were killed by " + enemy.getName());
-                return CombatResult.PLAYER_DIED;
+                combatLog.addMessage("You were killed by " + enemy.getName());
+                return new CombatResult(false, combatLog);
             }
         }
     }
 
-    private void playerAttack(Player player, Enemy enemy) {
+    private void playerAttack(Player player, Enemy enemy, CombatLog combatLog) {
         Weapon weapon = player.getEquippedWeapon();
         int damage = generateDamage(weapon.getMinDamage(), weapon.getMaxDamage());
         enemy.takeDamage(damage);
-        System.out.println("You hit " + enemy.getName() + " for " + damage + " damage.");
+        combatLog.addMessage("You hit " + enemy.getName() + " for " + damage + " damage.");
     }
 
-    private void enemyAttack(Player player, Enemy enemy) {
+    private void enemyAttack(Player player, Enemy enemy, CombatLog combatLog) {
         int damage = generateDamage(enemy.getMinDamage(), enemy.getMaxDamage());
         player.takeDamage(damage);
-        System.out.println(enemy.getName() + " hits you for " + damage + " damage.");
+        combatLog.addMessage(enemy.getName() + " hits you for " + damage + " damage.");
     }
 
     private int generateDamage(int min, int max) {
