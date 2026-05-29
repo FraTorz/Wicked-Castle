@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
-import it.unicam.cs.mpgc.rpg129691.model.enemy.EnemyFactory;
+import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.EnemyFactory;
 import it.unicam.cs.mpgc.rpg129691.model.item.WeaponFactory;
 
 import java.util.Random;

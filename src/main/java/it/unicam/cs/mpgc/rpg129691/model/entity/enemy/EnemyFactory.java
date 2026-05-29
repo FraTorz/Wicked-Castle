@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129691.model.enemy;
+package it.unicam.cs.mpgc.rpg129691.model.entity.enemy;
 
 import java.util.Random;
 
@@ -12,11 +12,11 @@ public class EnemyFactory {
     public Enemy createRandomEnemy() {
         int value = random.nextInt(100);
         if(value < 40) {
-            return new Enemy("Skeleton", 30, 4, 8);
+            return new Skeleton();
         }
         if(value < 75) {
-            return new Enemy("Goblin", 20, 6, 12);
+            return new Goblin();
         }
-        return new Enemy("Cursed Knight", 50, 8, 14);
+        return new CursedKnight();
     }
 }

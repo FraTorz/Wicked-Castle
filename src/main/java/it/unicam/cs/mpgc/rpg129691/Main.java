@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg129691;
 
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
-import it.unicam.cs.mpgc.rpg129691.model.character.Player;
+import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
 public class Main {

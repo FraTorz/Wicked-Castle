@@ -1,9 +1,25 @@
 package it.unicam.cs.mpgc.rpg129691.model.item;
 
-public interface Weapon {
-    String getName();
+public abstract class Weapon {
+    private final String name;
+    private final int minDamage;
+    private final int maxDamage;
 
-    int getMinDamage();
+    protected Weapon(String name, int minDamage, int maxDamage) {
+        this.name = name;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+    }
 
-    int getMaxDamage();
+    public String getName() {
+        return name;
+    }
+
+    public int getMinDamage() {
+        return minDamage;
+    }
+
+    public int getMaxDamage() {
+        return maxDamage;
+    }
 }

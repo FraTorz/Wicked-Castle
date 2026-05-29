@@ -1,11 +1,11 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
-import it.unicam.cs.mpgc.rpg129691.model.character.Player;
+import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 
 public abstract class Room{
     private boolean visited;
 
-    public abstract void enter(Player player);
+    public abstract RoomResult enter(Player player);
 
     public abstract char getSymbol();
 

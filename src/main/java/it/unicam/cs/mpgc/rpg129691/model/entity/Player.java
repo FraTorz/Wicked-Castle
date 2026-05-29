@@ -1,15 +1,14 @@
-package it.unicam.cs.mpgc.rpg129691.model.character;
+package it.unicam.cs.mpgc.rpg129691.model.entity;
 
 import it.unicam.cs.mpgc.rpg129691.model.item.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
-public class Player {
-    private int health;
+public class Player extends Entity implements Healable{
     private Position position;
     private Weapon equippedWeapon;
 
     public Player(int health, Position position) {
-        this.health = health;
+        super(health);
         this.position = position;
         this.equippedWeapon = new Knife();
     }
@@ -24,12 +23,18 @@ public class Player {
         }
     }
 
-    public Weapon getEquippedWeapon() {
-        return equippedWeapon;
+    @Override
+    public int getMinDamage() {
+        return equippedWeapon.getMinDamage();
     }
 
-    public int getHealth() {
-        return health;
+    @Override
+    public int getMaxDamage() {
+        return equippedWeapon.getMaxDamage();
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
     }
 
     public Position getPosition() {
@@ -40,11 +45,9 @@ public class Player {
         this.position = newPosition;
     }
 
+    @Override
     public void heal(int amount) {
-        health += amount;
+        increaseHealth(amount);
     }
 
-    public void takeDamage(int amount) {
-        health -= amount;
-    }
 }

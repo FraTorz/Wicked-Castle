@@ -1,18 +1,9 @@
 package it.unicam.cs.mpgc.rpg129691.model.item;
 
-public class Sword implements Weapon{
-    @Override
-    public String getName() {
-        return "Sword";
+public class Sword extends Weapon{
+
+    public Sword() {
+        super("Sword", 7, 15);
     }
 
-    @Override
-    public int getMinDamage() {
-        return 7;
-    }
-
-    @Override
-    public int getMaxDamage() {
-        return 15;
-    }
 }

@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
-import it.unicam.cs.mpgc.rpg129691.model.character.Player;
+import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 
 public class TrapRoom extends Room{
     private final int damagePoints;
@@ -10,9 +10,10 @@ public class TrapRoom extends Room{
     }
 
     @Override
-    public void enter(Player player) {
+    public RoomResult enter(Player player) {
         player.takeDamage(damagePoints);
         super.setVisited(true);
+        return new RoomResult(RoomResultType.PLAYER_DAMAGED, null);
     }
 
     @Override
