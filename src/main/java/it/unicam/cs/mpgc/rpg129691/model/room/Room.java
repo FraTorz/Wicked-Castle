@@ -2,12 +2,19 @@ package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.character.Player;
 
-public interface Room {
-    void enter(Player player);
+public abstract class Room{
+    private boolean visited;
 
-    boolean isVisited();
+    public abstract void enter(Player player);
 
-    void setVisited(boolean visited);
+    public abstract char getSymbol();
 
-    char getSymbol();
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        if(this.visited) return;
+        this.visited = visited;
+    }
 }
