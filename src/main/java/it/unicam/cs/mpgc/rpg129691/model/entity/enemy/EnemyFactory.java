@@ -1,12 +1,14 @@
 package it.unicam.cs.mpgc.rpg129691.model.entity.enemy;
 
+import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
+
 import java.util.Random;
 
 public class EnemyFactory {
-    private final Random random;
+    private final GameRandom random;
 
-    public EnemyFactory() {
-        this.random = new Random();
+    public EnemyFactory(GameRandom random) {
+        this.random = random;
     }
 
     public Enemy createRandomEnemy() {

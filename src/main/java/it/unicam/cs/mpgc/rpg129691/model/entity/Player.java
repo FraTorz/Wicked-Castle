@@ -33,6 +33,11 @@ public class Player extends Entity implements Healable{
         return equippedWeapon.getMaxDamage();
     }
 
+    @Override
+    public void heal(int amount) {
+        increaseHealth(amount);
+    }
+
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
     }
@@ -43,11 +48,6 @@ public class Player extends Entity implements Healable{
 
     public void moveTo(Position newPosition) {
         this.position = newPosition;
-    }
-
-    @Override
-    public void heal(int amount) {
-        increaseHealth(amount);
     }
 
 }

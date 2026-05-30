@@ -1,19 +1,20 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.EnemyFactory;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
 import it.unicam.cs.mpgc.rpg129691.model.item.WeaponFactory;
 
 import java.util.Random;
 
 public class RoomFactory {
-    private final Random random;
+    private final GameRandom random;
     private final WeaponFactory weaponFactory;
     private final EnemyFactory enemyFactory;
 
-    public RoomFactory() {
-        this.random = new Random();
-        this.weaponFactory = new WeaponFactory();
-        this.enemyFactory = new EnemyFactory();
+    public RoomFactory(GameRandom random) {
+        this.random = random;
+        this.weaponFactory = new WeaponFactory(random);
+        this.enemyFactory = new EnemyFactory(random);
     }
 
     public Room createRandomRoom() {

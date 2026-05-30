@@ -14,10 +14,10 @@ public class GameEngine {
     private final CombatSystem combatSystem;
     private GameState gameState;
 
-    public GameEngine(DungeonMap map, Player player) {
+    public GameEngine(DungeonMap map, Player player, GameRandom random) {
         this.map = map;
         this.player = player;
-        this.combatSystem = new CombatSystem();
+        this.combatSystem = new CombatSystem(random);
         this.gameState = GameState.RUNNING;
     }
 

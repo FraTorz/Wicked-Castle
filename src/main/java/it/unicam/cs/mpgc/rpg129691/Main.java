@@ -13,7 +13,7 @@ public class Main {
 
         Player player = new Player(100, new Position(2,2));
 
-        GameEngine engine = new GameEngine(map, player);
+        // GameEngine engine = new GameEngine(map, player);
 
         // test movimento
     }

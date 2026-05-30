@@ -3,15 +3,16 @@ package it.unicam.cs.mpgc.rpg129691.model.combat;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Entity;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
 import it.unicam.cs.mpgc.rpg129691.model.item.Weapon;
 
 import java.util.Random;
 
 public class CombatSystem {
-    private final Random random;
+    private final GameRandom random;
 
-    public CombatSystem() {
-        this.random = new Random();
+    public CombatSystem(GameRandom random) {
+        this.random = random;
     }
 
     public CombatResult fight(Player player, Enemy enemy) {
