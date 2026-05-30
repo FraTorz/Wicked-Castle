@@ -8,13 +8,16 @@ import it.unicam.cs.mpgc.rpg129691.model.room.RoomFactory;
 public class DungeonGenerator {
     private final GameRandom random;
     private final RoomFactory roomFactory;
+    private final Difficulty difficulty;
+
 
     public DungeonGenerator(GameRandom random, Difficulty difficulty) {
         this.random = random;
+        this.difficulty = difficulty;
         this.roomFactory = new RoomFactory(random, difficulty);
     }
 
-    public DungeonMap generate(Difficulty difficulty) {
+    public DungeonMap generate() {
         DungeonMap map = new DungeonMap(difficulty.getMapSize());
         initializeRooms(map);
         placeExitRoom(map);

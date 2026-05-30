@@ -4,12 +4,10 @@ import java.util.Random;
 
 public class GameRandom {
     private final Random random;
-
-    public GameRandom() {
-        this.random = new Random();
-    }
+    private final long seed;
 
     public GameRandom(long seed) {
+        this.seed = seed;
         this.random = new Random(seed);
     }
 
@@ -20,4 +18,9 @@ public class GameRandom {
     public int nextInt(int origin, int bound) {
         return random.nextInt(origin, bound);
     }
+
+    public long getSeed() {
+        return seed;
+    }
+
 }
