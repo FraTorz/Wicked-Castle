@@ -33,18 +33,20 @@ public class DungeonGenerator {
     }
 
     private void placeExitRoom(DungeonMap map) {
+        Position start = map.getStartPosition();
+        int mapSize = map.getSize();
         Position exitPosition;
         do {
-            int row = random.nextInt(map.getSize());
-            int column = random.nextInt(map.getSize());
+            int row = random.nextInt(mapSize);
+            int column = random.nextInt(mapSize);
             exitPosition = new Position(row, column);
-        } while(isStartPosition(map, exitPosition));
+        } while(distance(start, exitPosition) < difficulty.getMinExitDistance());
         map.setRoom(exitPosition, new ExitRoom());
         map.setExitPosition(exitPosition);
     }
 
-    private boolean isStartPosition(DungeonMap map, Position position) {
-        Position start = map.getStartPosition();
-        return start.equals(position);
+    private int distance(Position a, Position b){
+        return Math.abs(a.getRow() - b.getRow()) +
+                Math.abs(a.getColumn() - b.getColumn());
     }
 }

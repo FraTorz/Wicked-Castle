@@ -10,7 +10,8 @@ public enum Difficulty {
             15,
             10,
             30,
-            10
+            10,
+            2
     ),
 
     MEDIUM(
@@ -21,7 +22,8 @@ public enum Difficulty {
             10,
             20,
             20,
-            15
+            15,
+            3
     ),
 
     HARD(
@@ -32,7 +34,8 @@ public enum Difficulty {
             10,
             35,
             15,
-            20
+            20,
+            4
     );
 
     private final int mapSize;
@@ -43,10 +46,11 @@ public enum Difficulty {
     private final int enemyProbability;
     private final int healingAmount;
     private final int trapDamage;
+    private final int minExitDistance;
 
     Difficulty(int mapSize, int emptyProbability, int healingProbability,
                int trapProbability, int treasureProbability, int enemyProbability,
-               int healingAmount, int trapDamage) {
+               int healingAmount, int trapDamage, int minExitDistance) {
         this.mapSize = mapSize;
         this.emptyProbability = emptyProbability;
         this.healingProbability = healingProbability;
@@ -55,6 +59,7 @@ public enum Difficulty {
         this.enemyProbability = enemyProbability;
         this.healingAmount = healingAmount;
         this.trapDamage = trapDamage;
+        this.minExitDistance = minExitDistance;
         int total = emptyProbability + healingProbability + trapProbability
                 + treasureProbability + enemyProbability;
         if(total != 100) {
@@ -92,5 +97,9 @@ public enum Difficulty {
 
     public int getTrapDamage() {
         return trapDamage;
+    }
+
+    public int getMinExitDistance() {
+        return minExitDistance;
     }
 }
