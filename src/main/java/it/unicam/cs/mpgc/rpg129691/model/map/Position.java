@@ -19,6 +19,11 @@ public class Position {
         return column;
     }
 
+    public int distanceTo(Position other) {
+        return Math.abs(row - other.row)
+                + Math.abs(column - other.column);
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;

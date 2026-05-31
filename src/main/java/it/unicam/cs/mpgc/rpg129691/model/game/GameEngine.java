@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatLog;
+import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
+import it.unicam.cs.mpgc.rpg129691.model.hint.HintGenerator;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatSystem;
 import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
@@ -14,12 +16,14 @@ public class GameEngine {
     private final DungeonMap map;
     private final Player player;
     private final CombatSystem combatSystem;
+    private final HintGenerator hintGenerator;
     private GameState gameState;
 
     public GameEngine(DungeonMap map, Player player, GameRandom random) {
         this.map = map;
         this.player = player;
         this.combatSystem = new CombatSystem(random);
+        this.hintGenerator = new HintGenerator();
         this.gameState = GameState.RUNNING;
     }
 
@@ -69,7 +73,12 @@ public class GameEngine {
         for(String message : combatLog.getMessages()) {
             System.out.println(message);
         }
-        if(!player.isAlive()) gameState = GameState.PLAYER_LOST;
+        if(player.isAlive()){
+            Hint hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
+            player.addHint(hint);
+            System.out.println(hint.getMessage());
+        } else
+            gameState = GameState.PLAYER_LOST;
     }
 
     public DungeonMap getMap() {

@@ -1,16 +1,20 @@
 package it.unicam.cs.mpgc.rpg129691.model.entity;
 
+import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
+import it.unicam.cs.mpgc.rpg129691.model.hint.HintLog;
 import it.unicam.cs.mpgc.rpg129691.model.item.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
 public class Player extends Entity implements Healable{
     private Position position;
     private Weapon equippedWeapon;
+    private final HintLog hintLog;
 
     public Player(int health, Position position) {
         super(health);
         this.position = position;
         this.equippedWeapon = new Knife();
+        this.hintLog = new HintLog();
     }
 
     public void equipWeapon(Weapon newWeapon){
@@ -38,6 +42,14 @@ public class Player extends Entity implements Healable{
         increaseHealth(amount);
     }
 
+    public void moveTo(Position newPosition) {
+        this.position = newPosition;
+    }
+
+    public void addHint(Hint hint){
+        hintLog.add(hint);
+    }
+
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
     }
@@ -46,8 +58,7 @@ public class Player extends Entity implements Healable{
         return position;
     }
 
-    public void moveTo(Position newPosition) {
-        this.position = newPosition;
+    public HintLog getHintLog() {
+        return hintLog;
     }
-
 }
