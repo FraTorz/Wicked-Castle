@@ -2,10 +2,9 @@ package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 
-public class ExitRoom extends Room{
+public class ExitRoom implements Room{
     @Override
     public RoomResult enter(Player player) {
-        super.setVisited(true);
         return new RoomResult(RoomResultType.PLAYER_ESCAPED, null);
     }
 
@@ -13,4 +12,10 @@ public class ExitRoom extends Room{
     public char getSymbol() {
         return 'E';
     }
+
+    @Override
+    public boolean isConsumable(){
+        return false;
+    }
+
 }

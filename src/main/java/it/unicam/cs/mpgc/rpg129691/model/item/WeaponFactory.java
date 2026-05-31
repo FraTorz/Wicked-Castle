@@ -2,8 +2,6 @@ package it.unicam.cs.mpgc.rpg129691.model.item;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
 
-import java.util.Random;
-
 public class WeaponFactory {
     private final GameRandom random;
 

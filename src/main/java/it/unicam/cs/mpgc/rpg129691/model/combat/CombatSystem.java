@@ -15,19 +15,19 @@ public class CombatSystem {
         this.random = random;
     }
 
-    public CombatResult fight(Player player, Enemy enemy) {
+    public CombatLog fight(Player player, Enemy enemy) {
         CombatLog combatLog = new CombatLog();
         combatLog.addMessage("A " + enemy.getName() + " appears!");
         while(true) {
             entityAttack(player, enemy, combatLog);
             if(!enemy.isAlive()) {
                 combatLog.addMessage(enemy.getName() + " was defeated!");
-                return new CombatResult(true, combatLog);
+                return combatLog;
             }
             entityAttack(player, enemy, combatLog);
             if(!player.isAlive()) {
                 combatLog.addMessage("You were killed by " + enemy.getName());
-                return new CombatResult(false, combatLog);
+                return combatLog;
             }
         }
     }

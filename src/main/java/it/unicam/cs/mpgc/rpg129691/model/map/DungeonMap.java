@@ -1,17 +1,26 @@
 package it.unicam.cs.mpgc.rpg129691.model.map;
 
+import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.room.*;
 
-import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DungeonMap {
     private final Room[][] rooms;
     private final int size;
     private Position exitPosition;
+    private final long seed;
+    private final Difficulty difficulty;
+    private final Set<Position> visitedPositions;
 
-    public DungeonMap(int size) {
-        this.size = size;
+
+    public DungeonMap(long seed, Difficulty difficulty) {
+        this.size = difficulty.getMapSize();
         this.rooms = new Room[size][size];
+        this.seed = seed;
+        this.difficulty = difficulty;
+        this.visitedPositions = new HashSet<>();
     }
 
     public int getSize() {
@@ -46,4 +55,19 @@ public class DungeonMap {
         return new Position(center, center);
     }
 
+    public void visit(Position position) {
+        visitedPositions.add(position);
+    }
+
+    public boolean isVisited(Position position) {
+        return visitedPositions.contains(position);
+    }
+
+    public long getSeed() {
+        return seed;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
 }

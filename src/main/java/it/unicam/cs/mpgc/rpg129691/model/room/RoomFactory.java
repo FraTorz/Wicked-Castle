@@ -5,8 +5,6 @@ import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
 import it.unicam.cs.mpgc.rpg129691.model.item.WeaponFactory;
 
-import java.util.Random;
-
 public class RoomFactory {
     private final GameRandom random;
     private final Difficulty difficulty;

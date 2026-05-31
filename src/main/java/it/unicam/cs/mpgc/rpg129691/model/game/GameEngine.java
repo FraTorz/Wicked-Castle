@@ -1,10 +1,12 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
+import it.unicam.cs.mpgc.rpg129691.model.combat.CombatLog;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
-import it.unicam.cs.mpgc.rpg129691.model.combat.CombatResult;
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatSystem;
+import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.model.room.EmptyRoom;
 import it.unicam.cs.mpgc.rpg129691.model.room.Room;
 import it.unicam.cs.mpgc.rpg129691.model.room.RoomResult;
 
@@ -25,11 +27,21 @@ public class GameEngine {
         Position next = nextPosition(direction);
         if(map.isInside(next)) {
             player.moveTo(next);
+            map.visit(next);
             Room room = map.getRoom(next);
             RoomResult result = room.enter(player);
             handleRoomResult(result);
+            consumeRoom(room, next);
         }
     }
+
+    private void consumeRoom(Room room, Position position) {
+        if(gameState != GameState.RUNNING) return;
+        if(room.isConsumable()) {
+            map.setRoom(position, new EmptyRoom());
+        }
+    }
+
 
     private Position nextPosition(Direction direction){
         Position current = player.getPosition();
@@ -43,31 +55,33 @@ public class GameEngine {
 
     private void handleRoomResult(RoomResult result) {
         switch(result.getType()) {
-            case COMBAT -> handleCombat(result);
+            case COMBAT -> handleCombat(result.getEnemy());
             case PLAYER_ESCAPED -> gameState = GameState.PLAYER_WON;
+            case PLAYER_DAMAGED -> {
+                if(!player.isAlive()) gameState = GameState.PLAYER_LOST;
+            }
             default -> {}
         }
-        checkPlayerStatus();
     }
 
-    private void handleCombat(RoomResult roomResult){
-        CombatResult combatResult = combatSystem.fight(player, roomResult.getEnemy());
-        for(String message : combatResult.getCombatLog().getMessages()) {
+    private void handleCombat(Enemy enemy){
+        CombatLog combatLog = combatSystem.fight(player, enemy);
+        for(String message : combatLog.getMessages()) {
             System.out.println(message);
         }
-        if(!combatResult.hasPlayerWon()) {
-            gameState = GameState.PLAYER_LOST;
-        }
+        if(!player.isAlive()) gameState = GameState.PLAYER_LOST;
     }
 
-    private void checkPlayerStatus() {
-        if (player.getHealth() <= 0) {
-            gameState = GameState.PLAYER_LOST;
-        }
+    public DungeonMap getMap() {
+        return map;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 
     public GameState getGameState() {
         return gameState;
     }
+
 }
