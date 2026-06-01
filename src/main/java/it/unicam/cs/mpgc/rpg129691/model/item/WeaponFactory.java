@@ -19,4 +19,13 @@ public class WeaponFactory {
         }
         return new Axe();
     }
+
+    public static Weapon createWeapon(String weaponName) {
+        return switch (weaponName) {
+            case "Knife" -> new Knife();
+            case "Sword" -> new Sword();
+            case "Axe" -> new Axe();
+            default -> throw new IllegalArgumentException("Unknown weapon: " + weaponName);
+        };
+    }
 }

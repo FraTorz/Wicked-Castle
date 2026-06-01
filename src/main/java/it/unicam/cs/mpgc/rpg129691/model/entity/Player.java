@@ -5,6 +5,8 @@ import it.unicam.cs.mpgc.rpg129691.model.hint.HintLog;
 import it.unicam.cs.mpgc.rpg129691.model.item.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
+import java.util.Set;
+
 public class Player extends Entity implements Healable{
     private Position position;
     private Weapon equippedWeapon;
@@ -50,8 +52,16 @@ public class Player extends Entity implements Healable{
         hintLog.add(hint);
     }
 
+    public void restoreHints(Set<Hint> hintLog){
+        this.hintLog.restore(hintLog);
+    }
+
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
+    }
+
+    public void restoreWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
     }
 
     public Position getPosition() {

@@ -6,7 +6,7 @@ public class HintGenerator {
     public Hint generate(Position playerPos, Position exitPos) {
         String direction = calculateDirection(playerPos, exitPos);
         String distance = calculateDistance(playerPos,exitPos);
-        return new Hint("L'uscita si trova " + direction + ". " + distance);
+        return new Hint("L'uscita si trova " + direction + ". " + distance, playerPos);
     }
 
     private String calculateDirection(Position player, Position exit) {

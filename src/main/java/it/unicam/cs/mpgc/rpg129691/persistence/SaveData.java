@@ -1,31 +1,74 @@
 package it.unicam.cs.mpgc.rpg129691.persistence;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
-import it.unicam.cs.mpgc.rpg129691.model.game.GameState;
+import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
-import java.util.List;
+import java.util.Set;
 
 public class SaveData {
 
     private long seed;
-
     private Difficulty difficulty;
-
-    private Position playerPosition;
-
     private int playerHealth;
-
+    private Position playerPosition;
     private String equippedWeapon;
+    private Set<Position> visitedPositions;
+    private Set<Hint> hints;
 
-    private List<Position> visitedRooms;
+    public long getSeed() {
+        return seed;
+    }
 
-    private List<Position> defeatedEnemies;
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
 
-    private List<Position> collectedTreasures;
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
 
-    private GameState gameState;
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 
-    // getter/setter
+    public int getPlayerHealth() {
+        return playerHealth;
+    }
 
+    public void setPlayerHealth(int playerHealth) {
+        this.playerHealth = playerHealth;
+    }
+
+    public Position getPlayerPosition() {
+        return playerPosition;
+    }
+
+    public void setPlayerPosition(Position playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
+    public String getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(String equippedWeapon) {
+        this.equippedWeapon = this.equippedWeapon;
+    }
+
+    public Set<Position> getVisitedPositions() {
+        return visitedPositions;
+    }
+
+    public void setVisitedPositions(Set<Position> visitedPositions) {
+        this.visitedPositions = visitedPositions;
+    }
+
+    public Set<Hint> getHints() {
+        return hints;
+    }
+
+    public void setHints(Set<Hint> hints) {
+        this.hints = hints;
+    }
 }

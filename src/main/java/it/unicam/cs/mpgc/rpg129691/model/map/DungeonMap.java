@@ -14,7 +14,6 @@ public class DungeonMap {
     private final Difficulty difficulty;
     private final Set<Position> visitedPositions;
 
-
     public DungeonMap(long seed, Difficulty difficulty) {
         this.size = difficulty.getMapSize();
         this.rooms = new Room[size][size];
@@ -69,5 +68,13 @@ public class DungeonMap {
 
     public Difficulty getDifficulty() {
         return difficulty;
+    }
+
+    public Set<Position> getVisitedPositions() {
+        return Set.copyOf(visitedPositions);
+    }
+
+    public void restoreVisitedPositions(Set<Position> visitedPositions) {
+        this.visitedPositions.addAll(visitedPositions);
     }
 }
