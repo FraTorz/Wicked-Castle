@@ -52,8 +52,8 @@ public class Player extends Entity implements Healable{
         hintLog.add(hint);
     }
 
-    public void restoreHints(Set<Hint> hintLog){
-        this.hintLog.restore(hintLog);
+    public void restoreHints(Set<Hint> hints){
+        this.hintLog.restore(hints);
     }
 
     public Weapon getEquippedWeapon() {

@@ -75,6 +75,12 @@ public class DungeonMap {
     }
 
     public void restoreVisitedPositions(Set<Position> visitedPositions) {
-        this.visitedPositions.addAll(visitedPositions);
+        this.visitedPositions.clear();
+        for(Position position : visitedPositions) {
+            this.visitedPositions.add(position);
+            if(!position.equals(this.exitPosition)) {
+                setRoom(position, new EmptyRoom());
+            }
+        }
     }
 }

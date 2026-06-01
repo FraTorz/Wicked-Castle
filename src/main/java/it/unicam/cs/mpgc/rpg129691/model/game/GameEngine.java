@@ -46,7 +46,6 @@ public class GameEngine {
         }
     }
 
-
     private Position nextPosition(Direction direction){
         Position current = player.getPosition();
         return switch(direction) {
@@ -81,15 +80,15 @@ public class GameEngine {
             gameState = GameState.PLAYER_LOST;
     }
 
-    public DungeonMap getMap() {
+    public DungeonMap getMap(){
         return map;
     }
 
-    public Player getPlayer() {
+    public Player getPlayer(){
         return player;
     }
 
-    public GameState getGameState() {
+    public GameState getGameState(){
         return gameState;
     }
 

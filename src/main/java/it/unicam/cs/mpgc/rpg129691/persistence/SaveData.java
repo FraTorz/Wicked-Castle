@@ -53,7 +53,7 @@ public class SaveData {
     }
 
     public void setEquippedWeapon(String equippedWeapon) {
-        this.equippedWeapon = this.equippedWeapon;
+        this.equippedWeapon = equippedWeapon;
     }
 
     public Set<Position> getVisitedPositions() {
