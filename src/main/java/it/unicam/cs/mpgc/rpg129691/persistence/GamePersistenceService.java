@@ -3,7 +3,8 @@ package it.unicam.cs.mpgc.rpg129691.persistence;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class GamePersistenceService {
 
@@ -17,13 +18,29 @@ public class GamePersistenceService {
         this.gameLoader = new GameLoader();
     }
 
-    public void saveGame(GameEngine game, Path path) throws IOException {
+    public void saveGame(GameEngine game, String saveName) throws IOException {
+        if(saveManager.exists(saveName)) {
+            throw new IllegalArgumentException("SAVE_NAME_ALREADY_EXISTS");
+        }
+        if(saveManager.hasReachedLimit()) {
+            throw new IllegalStateException("SAVE_LIMIT_REACHED");
+        }
         SaveData data = saveDataFactory.create(game);
-        saveManager.save(data, path);
+        data.setSaveName(saveName);
+        data.setSaveTime(LocalDateTime.now().toString());
+        saveManager.save(data);
     }
 
-    public GameEngine loadGame(Path path) throws IOException {
-        SaveData data = saveManager.load(path);
+    public GameEngine loadGame(String saveName) throws IOException {
+        SaveData data = saveManager.load(saveName);
         return gameLoader.load(data);
+    }
+
+    public List<SaveIndex> listSaves() throws IOException {
+        return saveManager.listSaves();
+    }
+
+    public void deleteSave(String saveName) throws IOException {
+        saveManager.delete(saveName);
     }
 }
