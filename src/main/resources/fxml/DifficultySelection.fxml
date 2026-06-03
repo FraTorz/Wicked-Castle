@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox
+        fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.DifficultySelectionController"
+        alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Nuova Partita">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label text="Seleziona la difficoltà:">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Button onAction="#startEasyGame" text="Facile">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+      <Button onAction="#startMediumGame" text="Media">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+      <Button onAction="#startHardGame" text="Difficile">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+      <Button onAction="#goBack" text="Indietro">
+         <font>
+            <Font size="15.0" />
+         </font></Button>
+   </children>
+</VBox>

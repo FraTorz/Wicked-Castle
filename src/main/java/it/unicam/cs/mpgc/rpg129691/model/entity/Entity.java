@@ -11,10 +11,16 @@ public abstract class Entity {
         return health;
     }
 
+    // Solo Player
+    protected void setHealth(int health) {
+        this.health = health;
+    }
+
     public void takeDamage(int damage) {
         health -= damage;
     }
 
+    // Solo Player
     protected void increaseHealth(int amount) {
         health += amount;
     }

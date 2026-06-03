@@ -67,17 +67,14 @@ public class GameEngine {
         }
     }
 
-    private void handleCombat(Enemy enemy){
+    private CombatLog handleCombat(Enemy enemy){
         CombatLog combatLog = combatSystem.fight(player, enemy);
-        for(String message : combatLog.getMessages()) {
-            System.out.println(message);
-        }
         if(player.isAlive()){
             Hint hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
             player.addHint(hint);
-            System.out.println(hint.getMessage());
         } else
             gameState = GameState.PLAYER_LOST;
+        return combatLog;
     }
 
     public DungeonMap getMap(){

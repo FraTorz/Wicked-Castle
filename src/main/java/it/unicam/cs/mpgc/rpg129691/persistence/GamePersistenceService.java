@@ -36,11 +36,11 @@ public class GamePersistenceService {
         return gameLoader.load(data);
     }
 
-    public List<SaveIndex> listSaves() throws IOException {
-        return saveManager.listSaves();
-    }
-
     public void deleteSave(String saveName) throws IOException {
         saveManager.delete(saveName);
+    }
+
+    public List<SaveIndex> listSaves() throws IOException {
+        return saveManager.listSaves();
     }
 }

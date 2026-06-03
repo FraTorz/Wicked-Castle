@@ -7,7 +7,7 @@ import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
 import java.util.Set;
 
-public class Player extends Entity implements Healable{
+public class Player extends Entity{
     private Position position;
     private Weapon equippedWeapon;
     private final HintLog hintLog;
@@ -19,14 +19,12 @@ public class Player extends Entity implements Healable{
         this.hintLog = new HintLog();
     }
 
-    public void equipWeapon(Weapon newWeapon){
+    public boolean equipWeapon(Weapon newWeapon){
         if(newWeapon.getMaxDamage() > equippedWeapon.getMaxDamage()) {
             equippedWeapon = newWeapon;
-            System.out.println("You equipped: " + newWeapon.getName());
-        } else {
-            System.out.println("You found " + newWeapon.getName() +
-                    ", but your current weapon is stronger.");
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -39,9 +37,12 @@ public class Player extends Entity implements Healable{
         return equippedWeapon.getMaxDamage();
     }
 
-    @Override
     public void heal(int amount) {
-        increaseHealth(amount);
+        super.increaseHealth(amount);
+    }
+
+    public void restoreHealth(int health){
+        super.setHealth(health);
     }
 
     public void moveTo(Position newPosition) {
