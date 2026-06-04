@@ -15,8 +15,4 @@ public class TrapRoom implements Room{
         return new RoomResult(RoomResultType.PLAYER_DAMAGED, null);
     }
 
-    @Override
-    public char getSymbol() {
-        return 'X';
-    }
 }

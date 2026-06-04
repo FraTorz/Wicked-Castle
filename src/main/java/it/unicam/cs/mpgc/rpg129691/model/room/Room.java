@@ -6,8 +6,6 @@ public interface Room{
 
      RoomResult enter(Player player);
 
-    char getSymbol();
-
     default boolean isConsumable(){
         return true;
     }

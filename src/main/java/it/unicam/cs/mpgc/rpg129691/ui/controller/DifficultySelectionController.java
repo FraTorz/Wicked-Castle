@@ -1,27 +1,38 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
+import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameFactory;
 import it.unicam.cs.mpgc.rpg129691.ui.SceneManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 
 public class DifficultySelectionController {
 
+    private final GameFactory gameFactory = new GameFactory();
+
     @FXML
     private void startEasyGame() {
-        System.out.println("EASY");
+        startGame(Difficulty.EASY);
     }
-
     @FXML
     private void startMediumGame() {
-        System.out.println("MEDIUM");
+        startGame(Difficulty.MEDIUM);
     }
-
     @FXML
     private void startHardGame() {
-        System.out.println("HARD");
+        startGame(Difficulty.HARD);
     }
 
     @FXML
     private void goBack() {
         SceneManager.switchScene("/fxml/MainMenu.fxml");
+    }
+
+    private void startGame(Difficulty difficulty) {
+        GameEngine game = gameFactory.createNewGame(difficulty);
+        FXMLLoader loader = SceneManager.loadScene("/fxml/Game.fxml");
+        GameController controller = loader.getController();
+        controller.setGame(game);
     }
 }

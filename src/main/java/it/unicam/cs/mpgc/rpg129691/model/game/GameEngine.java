@@ -27,16 +27,16 @@ public class GameEngine {
         this.gameState = GameState.RUNNING;
     }
 
-    public void movePlayer(Direction direction) {
+    public boolean movePlayer(Direction direction) {
         Position next = nextPosition(direction);
-        if(map.isInside(next)) {
-            player.moveTo(next);
-            map.visit(next);
-            Room room = map.getRoom(next);
-            RoomResult result = room.enter(player);
-            handleRoomResult(result);
-            consumeRoom(room, next);
-        }
+        if(!map.isInside(next)) return false;
+        player.moveTo(next);
+        map.visit(next);
+        Room room = map.getRoom(next);
+        RoomResult result = room.enter(player);
+        handleRoomResult(result);
+        consumeRoom(room, next);
+        return true;
     }
 
     private void consumeRoom(Room room, Position position) {

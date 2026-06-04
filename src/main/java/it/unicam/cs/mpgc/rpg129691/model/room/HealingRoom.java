@@ -15,8 +15,4 @@ public class HealingRoom implements Room{
         return new RoomResult(RoomResultType.PLAYER_HEALED, null);
     }
 
-    @Override
-    public char getSymbol() {
-        return '+';
-    }
 }

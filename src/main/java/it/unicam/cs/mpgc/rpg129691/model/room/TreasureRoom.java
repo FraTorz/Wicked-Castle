@@ -16,8 +16,4 @@ public class TreasureRoom implements Room {
         return new RoomResult(RoomResultType.NOTHING, null);
     }
 
-    @Override
-    public char getSymbol() {
-        return 'T';
-    }
 }

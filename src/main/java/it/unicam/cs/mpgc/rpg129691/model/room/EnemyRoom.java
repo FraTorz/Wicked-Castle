@@ -15,11 +15,6 @@ public class EnemyRoom implements Room{
         return new RoomResult(RoomResultType.COMBAT, enemy);
     }
 
-    @Override
-    public char getSymbol() {
-        return 'M';
-    }
-
     public Enemy getEnemy() {
         return enemy;
     }

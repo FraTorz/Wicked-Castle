@@ -24,4 +24,15 @@ public class SceneManager {
             throw new RuntimeException(e);
         }
     }
+
+    public static FXMLLoader loadScene(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            primaryStage.setScene(new Scene(root));
+            return loader;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

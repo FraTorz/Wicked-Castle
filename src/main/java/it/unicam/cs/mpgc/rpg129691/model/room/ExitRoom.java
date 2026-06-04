@@ -9,11 +9,6 @@ public class ExitRoom implements Room{
     }
 
     @Override
-    public char getSymbol() {
-        return 'E';
-    }
-
-    @Override
     public boolean isConsumable(){
         return false;
     }

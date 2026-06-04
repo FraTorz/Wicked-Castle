@@ -9,11 +9,6 @@ public class EmptyRoom implements Room{
     }
 
     @Override
-    public char getSymbol() {
-        return '.';
-    }
-
-    @Override
     public boolean isConsumable(){
         return false;
     }
