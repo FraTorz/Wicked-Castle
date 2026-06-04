@@ -17,7 +17,7 @@ public class MainMenuController {
 
     @FXML
     private void showHowToPlay() {
-        System.out.println("Come si gioca");
+        SceneManager.switchScene("/fxml/HowToPlay.fxml");
     }
 
     @FXML
