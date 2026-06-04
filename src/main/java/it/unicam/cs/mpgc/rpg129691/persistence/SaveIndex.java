@@ -9,6 +9,16 @@ public class SaveIndex {
     private int playerHealth;
     private String saveTime;
 
+    @Override
+    public String toString() {
+        return """
+           %s
+           Difficoltà: %s
+           HP: %d
+           %s
+           """.formatted(saveName, difficulty, playerHealth, saveTime);
+    }
+
     public String getSaveName() {
         return saveName;
     }

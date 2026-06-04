@@ -8,7 +8,7 @@
    <children>
       <Label text="WICKED CASTLE">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
       <Button onAction="#startNewGame" text="Nuova Partita" />

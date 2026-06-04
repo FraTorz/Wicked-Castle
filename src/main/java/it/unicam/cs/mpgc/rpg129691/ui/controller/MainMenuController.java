@@ -12,7 +12,7 @@ public class MainMenuController {
 
     @FXML
     private void openSaveManagement() {
-        System.out.println("Gestione salvataggi");
+        SceneManager.switchScene("/fxml/SaveManagement.fxml");
     }
 
     @FXML
