@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg129691.ui;
+package it.unicam.cs.mpgc.rpg129691.ui.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

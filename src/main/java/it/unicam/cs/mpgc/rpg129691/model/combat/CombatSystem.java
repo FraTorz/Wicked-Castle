@@ -24,7 +24,7 @@ public class CombatSystem {
                 combatLog.addMessage(enemy.getName() + " was defeated!");
                 return combatLog;
             }
-            entityAttack(player, enemy, combatLog);
+            entityAttack(enemy, player, combatLog);
             if(!player.isAlive()) {
                 combatLog.addMessage("You were killed by " + enemy.getName());
                 return combatLog;

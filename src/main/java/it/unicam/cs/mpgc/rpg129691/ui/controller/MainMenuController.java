@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
-import it.unicam.cs.mpgc.rpg129691.ui.SceneManager;
+import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
 
 public class MainMenuController {

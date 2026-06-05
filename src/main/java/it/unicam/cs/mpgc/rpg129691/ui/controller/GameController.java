@@ -1,11 +1,14 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
+import it.unicam.cs.mpgc.rpg129691.model.combat.CombatLog;
 import it.unicam.cs.mpgc.rpg129691.model.game.Direction;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameEvent;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameState;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
-import it.unicam.cs.mpgc.rpg129691.ui.SceneManager;
+import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
+import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -106,6 +109,15 @@ public class GameController {
                         + game.getPlayer().getPosition().getColumn()
                         + ")"
         );
+        GameEvent event = game.getLastEvent();
+        if (event != null) {
+            appendLog(event.getMessage());
+            if (event.getCombatLog() != null) {
+                event.getCombatLog()
+                        .getMessages()
+                        .forEach(this::appendLog);
+            }
+        }
         refresh();
         checkGameState();
     }
@@ -136,11 +148,16 @@ public class GameController {
 
     @FXML
     private void handleEndGame() {
+        String title;
+        String message;
         if (game.getGameState() == GameState.RUNNING) {
-            // opzionale: conferma uscita
-            SceneManager.switchScene("/fxml/MainMenu.fxml");
+            title = "Termina partita";
+            message = "Sei sicuro di voler abbandonare la partita?";
         } else {
-            // fine partita
+            title = "Partita terminata";
+            message = "Sei sicuro di voler uscire dalla partita?";
+        }
+        if (AlertUtils.showConfirmation(title, message)) {
             SceneManager.switchScene("/fxml/MainMenu.fxml");
         }
     }

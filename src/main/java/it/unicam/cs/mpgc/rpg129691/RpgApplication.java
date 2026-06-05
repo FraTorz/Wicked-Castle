@@ -1,10 +1,7 @@
 package it.unicam.cs.mpgc.rpg129691;
 
-import it.unicam.cs.mpgc.rpg129691.ui.SceneManager;
+import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 public class RpgApplication extends Application {

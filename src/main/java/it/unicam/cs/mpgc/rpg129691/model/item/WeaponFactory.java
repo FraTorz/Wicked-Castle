@@ -12,12 +12,12 @@ public class WeaponFactory {
     public Weapon createRandomWeapon() {
         int value = random.nextInt(100);
         if(value < 50) {
-            return new Knife();
-        }
-        if(value < 80) {
             return new Sword();
         }
-        return new Axe();
+        if(value < 80) {
+            return new Axe();
+        }
+        return new Cannon();
     }
 
     public static Weapon createWeapon(String weaponName) {
@@ -25,6 +25,7 @@ public class WeaponFactory {
             case "Knife" -> new Knife();
             case "Sword" -> new Sword();
             case "Axe" -> new Axe();
+            case "Cannon" -> new Cannon();
             default -> throw new IllegalArgumentException("Unknown weapon: " + weaponName);
         };
     }

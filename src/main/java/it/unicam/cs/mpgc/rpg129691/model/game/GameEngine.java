@@ -17,6 +17,9 @@ public class GameEngine {
     private final Player player;
     private final CombatSystem combatSystem;
     private final HintGenerator hintGenerator;
+    private CombatLog lastCombatLog;
+    private String lastEventMessage;
+    private GameEvent lastEvent;
     private GameState gameState;
 
     public GameEngine(DungeonMap map, Player player, GameRandom random) {
@@ -28,6 +31,8 @@ public class GameEngine {
     }
 
     public boolean movePlayer(Direction direction) {
+        lastEventMessage = null;
+        lastCombatLog = null;
         Position next = nextPosition(direction);
         if(!map.isInside(next)) return false;
         player.moveTo(next);
@@ -57,24 +62,34 @@ public class GameEngine {
     }
 
     private void handleRoomResult(RoomResult result) {
+        CombatLog log = null;
         switch(result.getType()) {
-            case COMBAT -> handleCombat(result.getEnemy());
-            case PLAYER_ESCAPED -> gameState = GameState.PLAYER_WON;
+            case COMBAT -> {
+                lastEventMessage = "Hai trovato un nemico.";
+                log = handleCombat(result.getEnemy());
+            }
+            case PLAYER_ESCAPED -> {
+                lastEventMessage = "Hai trovato l'uscita!";
+                gameState = GameState.PLAYER_WON;
+            }
             case PLAYER_DAMAGED -> {
+                lastEventMessage = "Hai attivato una trappola.";
                 if(!player.isAlive()) gameState = GameState.PLAYER_LOST;
             }
-            default -> {}
+            case PLAYER_HEALED -> lastEventMessage = "Hai recuperato salute.";
+            case NOTHING -> lastEventMessage = "La stanza è vuota.";
         }
+        lastEvent = new GameEvent(lastEventMessage, log);
     }
 
     private CombatLog handleCombat(Enemy enemy){
-        CombatLog combatLog = combatSystem.fight(player, enemy);
+        lastCombatLog = combatSystem.fight(player, enemy);
         if(player.isAlive()){
             Hint hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
             player.addHint(hint);
         } else
             gameState = GameState.PLAYER_LOST;
-        return combatLog;
+        return lastCombatLog;
     }
 
     public DungeonMap getMap(){
@@ -89,4 +104,15 @@ public class GameEngine {
         return gameState;
     }
 
+    public CombatLog getLastCombatLog() {
+        return lastCombatLog;
+    }
+
+    public String getLastEventMessage() {
+        return lastEventMessage;
+    }
+
+    public GameEvent getLastEvent() {
+        return lastEvent;
+    }
 }
