@@ -10,19 +10,19 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <Label text="Seleziona la difficoltà:">
+      <Label text="Seleziona il livello di difficoltà:">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Button onAction="#startEasyGame" text="Facile">
+      <Button onAction="#startEasyGame" text="Basso">
          <font>
             <Font size="15.0" />
          </font></Button>
-      <Button onAction="#startMediumGame" text="Media">
+      <Button onAction="#startMediumGame" text="Medio">
          <font>
             <Font size="15.0" />
          </font></Button>
-      <Button onAction="#startHardGame" text="Difficile">
+      <Button onAction="#startHardGame" text="Alto">
          <font>
             <Font size="15.0" />
          </font></Button>

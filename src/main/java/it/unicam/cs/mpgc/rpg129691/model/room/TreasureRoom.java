@@ -12,8 +12,15 @@ public class TreasureRoom implements Room {
 
     @Override
     public RoomResult enter(Player player) {
-        player.equipWeapon(weapon);
-        return new RoomResult(RoomResultType.NOTHING, null);
+        boolean equipped = player.equipWeapon(weapon);
+        String message;
+        message = "Hai trovato " + weapon.getName() +
+                (equipped ? " e l'hai equipaggiata." : " ma la tua arma è migliore.");
+        return new RoomResult(
+                RoomResultType.TREASURE_FOUND,
+                null,
+                message
+        );
     }
 
 }

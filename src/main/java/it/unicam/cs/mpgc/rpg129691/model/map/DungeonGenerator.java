@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg129691.model.map;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
+import it.unicam.cs.mpgc.rpg129691.model.room.EmptyRoom;
 import it.unicam.cs.mpgc.rpg129691.model.room.ExitRoom;
 import it.unicam.cs.mpgc.rpg129691.model.room.RoomFactory;
 
@@ -27,7 +28,12 @@ public class DungeonGenerator {
     private void initializeRooms(DungeonMap map) {
         for(int row = 0; row < map.getSize(); row++) {
             for(int column = 0; column < map.getSize(); column++) {
-                map.setRoom(new Position(row, column), roomFactory.createRandomRoom());
+                Position pos = new Position(row, column);
+                if(pos.equals(map.getStartPosition())) {
+                    map.setRoom(pos, new EmptyRoom());
+                    map.visit(pos);
+                } else
+                    map.setRoom(pos, roomFactory.createRandomRoom());
             }
         }
     }

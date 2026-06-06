@@ -12,7 +12,11 @@ public class HealingRoom implements Room{
     @Override
     public RoomResult enter(Player player) {
         player.heal(healingPoints);
-        return new RoomResult(RoomResultType.PLAYER_HEALED, null);
+        return new RoomResult(
+                RoomResultType.PLAYER_HEALED,
+                null,
+                "Hai recuperato " + healingPoints + " punti vita."
+        );
     }
 
 }

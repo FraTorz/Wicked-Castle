@@ -9,5 +9,8 @@ public enum RoomResultType {
 
     COMBAT,
 
+    TREASURE_FOUND,
+
     PLAYER_ESCAPED
+
 }

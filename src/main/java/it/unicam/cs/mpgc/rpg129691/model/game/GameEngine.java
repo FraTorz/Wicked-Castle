@@ -18,7 +18,7 @@ public class GameEngine {
     private final CombatSystem combatSystem;
     private final HintGenerator hintGenerator;
     private CombatLog lastCombatLog;
-    private String lastEventMessage;
+    private Hint lastHint;
     private GameEvent lastEvent;
     private GameState gameState;
 
@@ -31,8 +31,8 @@ public class GameEngine {
     }
 
     public boolean movePlayer(Direction direction) {
-        lastEventMessage = null;
         lastCombatLog = null;
+        lastHint = null;
         Position next = nextPosition(direction);
         if(!map.isInside(next)) return false;
         player.moveTo(next);
@@ -63,23 +63,32 @@ public class GameEngine {
 
     private void handleRoomResult(RoomResult result) {
         CombatLog log = null;
+        EventType eventType;
         switch(result.getType()) {
             case COMBAT -> {
-                lastEventMessage = "Hai trovato un nemico.";
                 log = handleCombat(result.getEnemy());
+                eventType = EventType.COMBAT;
+            }
+            case TREASURE_FOUND -> eventType = EventType.TREASURE;
+            case PLAYER_HEALED -> eventType = EventType.HEAL;
+            case PLAYER_DAMAGED -> {
+                eventType = EventType.TRAP;
+                if(!player.isAlive()) {
+                    gameState = GameState.PLAYER_LOST;
+                }
             }
             case PLAYER_ESCAPED -> {
-                lastEventMessage = "Hai trovato l'uscita!";
+                eventType = EventType.EXIT;
                 gameState = GameState.PLAYER_WON;
             }
-            case PLAYER_DAMAGED -> {
-                lastEventMessage = "Hai attivato una trappola.";
-                if(!player.isAlive()) gameState = GameState.PLAYER_LOST;
-            }
-            case PLAYER_HEALED -> lastEventMessage = "Hai recuperato salute.";
-            case NOTHING -> lastEventMessage = "La stanza è vuota.";
+            case NOTHING -> eventType = EventType.EMPTY;
+            default -> throw new IllegalStateException();
         }
-        lastEvent = new GameEvent(lastEventMessage, log);
+        lastEvent = new GameEvent(
+                eventType,
+                result.getMessage(),
+                log
+        );
     }
 
     private CombatLog handleCombat(Enemy enemy){
@@ -87,6 +96,7 @@ public class GameEngine {
         if(player.isAlive()){
             Hint hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
             player.addHint(hint);
+            lastHint = hint;
         } else
             gameState = GameState.PLAYER_LOST;
         return lastCombatLog;
@@ -108,8 +118,8 @@ public class GameEngine {
         return lastCombatLog;
     }
 
-    public String getLastEventMessage() {
-        return lastEventMessage;
+    public Hint getLastHint() {
+        return lastHint;
     }
 
     public GameEvent getLastEvent() {

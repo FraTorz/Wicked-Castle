@@ -12,7 +12,11 @@ public class TrapRoom implements Room{
     @Override
     public RoomResult enter(Player player) {
         player.takeDamage(damagePoints);
-        return new RoomResult(RoomResultType.PLAYER_DAMAGED, null);
+        return new RoomResult(
+                RoomResultType.PLAYER_DAMAGED,
+                null,
+                "Hai attivato una trappola e subito " + damagePoints + " danni."
+        );
     }
 
 }

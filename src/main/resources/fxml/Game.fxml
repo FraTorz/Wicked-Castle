@@ -16,7 +16,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" spacing="50.0">
                <children>
-                  <Button fx:id="mapButton" mnemonicParsing="false" text="Visualizza Mappa" />
+                  <Button fx:id="mapButton" mnemonicParsing="false" onAction="#handleMap" text="Visualizza Mappa" />
                   <Button fx:id="saveButton" mnemonicParsing="false" text="Salva Paritita" />
                   <Button fx:id="endButton" mnemonicParsing="false" onAction="#handleEndGame" text="Termina Partita" />
                </children>
@@ -71,11 +71,17 @@
       </VBox>
    </left>
    <bottom>
-      <TextArea fx:id="eventLogArea" editable="false" prefHeight="95.0" prefWidth="600.0" wrapText="true" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextArea>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="95.0" prefWidth="294.0" />
+            <TextArea fx:id="eventLogArea" editable="false" prefHeight="95.0" prefWidth="600.0" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextArea>
+            <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="293.0" />
+         </children>
+      </HBox>
    </bottom>
    <center>
       <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true" BorderPane.alignment="CENTER">

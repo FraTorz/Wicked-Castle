@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
-import it.unicam.cs.mpgc.rpg129691.model.combat.CombatLog;
 import it.unicam.cs.mpgc.rpg129691.model.game.Direction;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEvent;
@@ -10,6 +9,8 @@ import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -62,6 +63,10 @@ public class GameController {
                 Label cell = new Label();
                 cell.setMinSize(40, 40);
                 cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                cell.setStyle("""
+                    -fx-border-color: black;
+                    -fx-alignment: center;
+                """);
                 if (r == 0 && c == 0) {
                     cell.setText("P");
                 } else if (map.isInside(new Position(worldRow, worldCol))) {
@@ -117,6 +122,10 @@ public class GameController {
                         .getMessages()
                         .forEach(this::appendLog);
             }
+            if (game.getLastHint() != null) {
+                appendLog("🔎 Indizio ottenuto:");
+                appendLog(game.getLastHint().getMessage());
+            }
         }
         refresh();
         checkGameState();
@@ -162,7 +171,21 @@ public class GameController {
         }
     }
 
+    @FXML
+    private void handleMap() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
+            Parent mapRoot = loader.load();
+            MapController controller = loader.getController();
+            controller.setGame(game);
+            SceneManager.setRoot(mapRoot);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void appendLog(String message) {
         eventLogArea.appendText(message + "\n");
     }
+
 }

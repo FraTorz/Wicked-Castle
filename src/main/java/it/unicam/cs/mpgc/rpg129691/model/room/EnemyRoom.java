@@ -12,7 +12,11 @@ public class EnemyRoom implements Room{
 
     @Override
     public RoomResult enter(Player player) {
-        return new RoomResult(RoomResultType.COMBAT, enemy);
+        return new RoomResult(
+                RoomResultType.COMBAT,
+                enemy,
+                "Hai incontrato un " + enemy.getName()+ "."
+        );
     }
 
     public Enemy getEnemy() {
