@@ -48,7 +48,7 @@ public class CombatResult {
     }
 
     public String getWinnerName() {
-        return winner == player ? "EROE" : enemy.getName();
+        return winner == player ? "EROE" : enemy.getDisplayName();
     }
 
     public void setWinner(Entity winner) {

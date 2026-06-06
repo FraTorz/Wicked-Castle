@@ -15,7 +15,7 @@ public class EnemyRoom implements Room{
         return new RoomResult(
                 RoomResultType.COMBAT,
                 enemy,
-                "Hai incontrato un " + enemy.getName()+ "."
+                "Hai incontrato un " + enemy.getDisplayName()+ "."
         );
     }
 

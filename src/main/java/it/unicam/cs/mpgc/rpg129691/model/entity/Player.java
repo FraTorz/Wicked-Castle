@@ -13,7 +13,7 @@ public class Player extends Entity{
     private final HintLog hintLog;
 
     public Player(int health, Position position) {
-        super(health);
+        super("EROE", health);
         this.position = position;
         this.equippedWeapon = new Knife();
         this.hintLog = new HintLog();

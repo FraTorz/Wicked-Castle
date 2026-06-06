@@ -15,7 +15,7 @@ public class HealingRoom implements Room{
         return new RoomResult(
                 RoomResultType.PLAYER_HEALED,
                 null,
-                "Hai recuperato " + healingPoints + " punti vita."
+                "Hai guadagnato " + healingPoints + " punti vita."
         );
     }
 

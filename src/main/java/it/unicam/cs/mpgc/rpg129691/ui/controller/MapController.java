@@ -86,8 +86,7 @@ public class MapController {
 
     @FXML
     private void goBack() {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
+        ((Stage) backButton.getScene().getWindow()).close();
     }
 
 }

@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatResult;
+import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -23,7 +25,7 @@ public class CombatSummaryController {
     }
 
     private void updateView() {
-        enemyNameLabel.setText("Combattimento contro " + combatResult.getEnemy().getName());
+        enemyNameLabel.setText("Combattimento contro " + combatResult.getEnemy().getDisplayName());
         turnsLabel.setText("Turni: " + combatResult.getTurnCount());
         damageDealtLabel.setText("Danni inflitti: " + combatResult.getPlayerDamage());
         damageTakenLabel.setText("Danni subiti: " + combatResult.getEnemyDamage());
@@ -32,13 +34,15 @@ public class CombatSummaryController {
     }
 
     @FXML
-    public void handleShowCombatLog() {
-
+    private void handleShowCombatLog() {
+        FXMLLoader loader = SceneManager.loadFXML("/fxml/CombatLog.fxml");
+        CombatLogController controller = loader.getController();
+        controller.setCombatLog(combatResult.getEntries());
+        SceneManager.showPopup(loader.getRoot(), "Log combattimento");
     }
 
     @FXML
     private void goBack() {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
+        ((Stage) backButton.getScene().getWindow()).close();
     }
 }
