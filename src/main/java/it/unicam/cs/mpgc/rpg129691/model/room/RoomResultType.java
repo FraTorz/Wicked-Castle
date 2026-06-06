@@ -1,6 +1,9 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
 public enum RoomResultType {
+
+    INVALID_MOVE,
+
     NOTHING,
 
     PLAYER_DAMAGED,
@@ -11,6 +14,6 @@ public enum RoomResultType {
 
     TREASURE_FOUND,
 
-    PLAYER_ESCAPED
+    PLAYER_ESCAPED;
 
 }

@@ -10,7 +10,6 @@ import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -19,12 +18,14 @@ import javafx.scene.layout.GridPane;
 public class GameController {
 
     private GameEngine game;
+    private GameEvent lastEvent;
     // left Panel
     @FXML private Label difficultyLabel;
     @FXML private Label hpLabel;
     @FXML private Label weaponLabel;
     // bottom Panel
     @FXML private TextArea eventLogArea;
+    @FXML private Button combatDetailsButton;
     // center Panel
     @FXML private GridPane mapGrid;
     // right Panel
@@ -101,34 +102,24 @@ public class GameController {
     }
 
     private void move(Direction direction) {
-        boolean moved = game.movePlayer(direction);
-        if(!moved) {
-            appendLog("Non puoi andare in quella direzione.");
-            return;
-        }
-        appendLog("Ti sei mosso verso " + direction);
-        appendLog(
-                "Posizione attuale: ("
-                        + game.getPlayer().getPosition().getRow()
-                        + ", "
-                        + game.getPlayer().getPosition().getColumn()
-                        + ")"
-        );
-        GameEvent event = game.getLastEvent();
-        if (event != null) {
-            appendLog(event.getMessage());
-            if (event.getCombatLog() != null) {
-                event.getCombatLog()
-                        .getMessages()
-                        .forEach(this::appendLog);
-            }
-            if (game.getLastHint() != null) {
-                appendLog("🔎 Indizio ottenuto:");
-                appendLog(game.getLastHint().getMessage());
-            }
-        }
+        lastEvent = game.movePlayer(direction);
+        appendLog(format(lastEvent));
+        lastEvent.getHint().ifPresent(h -> appendLog("🔎 Indizio ottenuto: " + h.getMessage()));
+        combatDetailsButton.setVisible(lastEvent.getCombatResult().isPresent());
         refresh();
         checkGameState();
+    }
+
+    private String format(GameEvent event) {
+        return switch (event.getType()) {
+            case COMBAT -> "⚔️ " + event.getMessage();
+            case TREASURE_FOUND -> "💰 " + event.getMessage();
+            case PLAYER_HEALED -> "❤️ " + event.getMessage();
+            case PLAYER_DAMAGED -> "☠️ " + event.getMessage();
+            case PLAYER_ESCAPED -> "🚪 " + event.getMessage();
+            case INVALID_MOVE -> "❌ " + event.getMessage();
+            case NOTHING -> event.getMessage();
+        };
     }
 
     private void checkGameState() {
@@ -173,15 +164,18 @@ public class GameController {
 
     @FXML
     private void handleMap() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Map.fxml"));
-            Parent mapRoot = loader.load();
-            MapController controller = loader.getController();
-            controller.setGame(game);
-            SceneManager.setRoot(mapRoot);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        FXMLLoader loader = SceneManager.loadFXML("/fxml/Map.fxml");
+        MapController controller = loader.getController();
+        controller.setGame(game);
+        SceneManager.showPopup(loader.getRoot(), "Mappa");
+    }
+
+    @FXML
+    private void showCombatDetails() {
+        FXMLLoader loader = SceneManager.loadFXML("/fxml/CombatSummary.fxml");
+        CombatSummaryController controller = loader.getController();
+        lastEvent.getCombatResult().ifPresent(controller::setCombatResult);
+        SceneManager.showPopup(loader.getRoot(), "Dettagli combattimento");
     }
 
     private void appendLog(String message) {

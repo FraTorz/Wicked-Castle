@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -8,12 +9,27 @@
    <children>
       <Label text="WICKED CASTLE">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="40.0" />
          </font>
       </Label>
-      <Button onAction="#startNewGame" text="Nuova Partita" />
-      <Button onAction="#openSaveManagement" text="Gestione salvataggi" />
-      <Button onAction="#showHowToPlay" text="Come si gioca" />
-      <Button onAction="#exitGame" text="Esci" />
+      <Button onAction="#startNewGame" text="Nuova Partita">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button onAction="#openSaveManagement" text="Gestione salvataggi">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button onAction="#showHowToPlay" text="Come si gioca">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin></Button>
+      <Button onAction="#exitGame" text="Esci">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
    </children>
 </VBox>

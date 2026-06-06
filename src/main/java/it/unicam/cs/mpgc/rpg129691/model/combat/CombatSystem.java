@@ -15,27 +15,28 @@ public class CombatSystem {
         this.random = random;
     }
 
-    public CombatLog fight(Player player, Enemy enemy) {
-        CombatLog combatLog = new CombatLog();
-        combatLog.addMessage("A " + enemy.getName() + " appears!");
-        while(true) {
-            entityAttack(player, enemy, combatLog);
-            if(!enemy.isAlive()) {
-                combatLog.addMessage(enemy.getName() + " was defeated!");
-                return combatLog;
+    public CombatResult fight(Player player, Enemy enemy) {
+        CombatResult result = new CombatResult(player, enemy);
+        while (true) {
+            entityAttack(player, enemy, result);
+            if (!enemy.isAlive()) {
+                result.setWinner(player);
+                result.setPlayerFinalHealth(player.getHealth());
+                return result;
             }
-            entityAttack(enemy, player, combatLog);
-            if(!player.isAlive()) {
-                combatLog.addMessage("You were killed by " + enemy.getName());
-                return combatLog;
+            entityAttack(enemy, player, result);
+            if (!player.isAlive()) {
+                result.setWinner(enemy);
+                result.setPlayerFinalHealth(0);
+                return result;
             }
         }
     }
 
-    private void entityAttack(Entity attacker, Entity defender, CombatLog combatLog) {
+    private void entityAttack(Entity attacker, Entity defender, CombatResult result) {
         int damage = generateDamage(attacker.getMinDamage(), attacker.getMaxDamage());
         defender.takeDamage(damage);
-        combatLog.addMessage(attacker.getClass().getSimpleName() + " hits for " + damage + " damage.");
+        result.addEntry(new CombatEntry(attacker, defender, damage));
     }
 
     private int generateDamage(int min, int max) {

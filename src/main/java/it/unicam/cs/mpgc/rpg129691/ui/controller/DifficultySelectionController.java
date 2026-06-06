@@ -31,7 +31,7 @@ public class DifficultySelectionController {
 
     private void startGame(Difficulty difficulty) {
         GameEngine game = gameFactory.createNewGame(difficulty);
-        FXMLLoader loader = SceneManager.loadScene("/fxml/Game.fxml");
+        FXMLLoader loader = SceneManager.switchSceneAndGetLoader("/fxml/Game.fxml");
         GameController controller = loader.getController();
         controller.setGame(game);
     }

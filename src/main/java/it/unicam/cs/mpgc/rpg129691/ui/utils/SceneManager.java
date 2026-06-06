@@ -15,10 +15,6 @@ public class SceneManager {
         primaryStage = stage;
     }
 
-    public static void setRoot(Parent root) {
-        primaryStage.setScene(new Scene(root));
-    }
-
     public static void switchScene(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
@@ -29,7 +25,7 @@ public class SceneManager {
         }
     }
 
-    public static FXMLLoader loadScene(String fxmlPath) {
+    public static FXMLLoader switchSceneAndGetLoader(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
             Parent root = loader.load();
@@ -38,5 +34,22 @@ public class SceneManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static FXMLLoader loadFXML(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
+            loader.load();
+            return loader;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void showPopup(Parent root, String title) {
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

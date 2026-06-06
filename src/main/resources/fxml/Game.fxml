@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.GameController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.GameController">
    <top>
       <VBox alignment="CENTER" prefHeight="85.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -73,11 +73,21 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="95.0" prefWidth="294.0" />
+            <Pane prefHeight="95.0" prefWidth="294.0">
+               <children>
+                  <Button fx:id="combatDetailsButton" contentDisplay="CENTER" layoutX="2.0" layoutY="16.0" mnemonicParsing="false" onAction="#showCombatDetails" prefHeight="56.0" prefWidth="92.0" text="Dettagli combattimento" textAlignment="CENTER" visible="false" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children></Pane>
             <TextArea fx:id="eventLogArea" editable="false" prefHeight="95.0" prefWidth="600.0" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
+               <HBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </HBox.margin>
             </TextArea>
             <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="293.0" />
          </children>

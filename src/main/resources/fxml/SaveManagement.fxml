@@ -8,16 +8,25 @@
    <top>
       <Label alignment="CENTER" text="GESTIONE SALVATAGGI" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="25.0" />
          </font>
       </Label>
    </top>
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#loadGame" text="Carica" />
-            <Button mnemonicParsing="false" onAction="#deleteGame" text="Elimina" />
-            <Button mnemonicParsing="false" onAction="#goBack" text="Indietro" />
+            <Button mnemonicParsing="false" onAction="#loadGame" text="Carica">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" onAction="#deleteGame" text="Elimina">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" onAction="#goBack" text="Indietro">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
          </children>
       </HBox>
    </bottom>

@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.DifficultySelectionController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.DifficultySelectionController">
    <children>
       <Label text="Nuova Partita">
          <font>
             <Font name="System Bold" size="15.0" />
-         </font></Label>
+         </font>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin></Label>
       <Label text="Seleziona il livello di difficoltà:">
          <font>
             <Font size="15.0" />
-         </font></Label>
-      <Button onAction="#startEasyGame" text="Basso">
+         </font>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin></Label>
+      <Button onAction="#startEasyGame" prefHeight="31.0" prefWidth="65.0" text="Basso">
          <font>
             <Font size="15.0" />
-         </font></Button>
-      <Button onAction="#startMediumGame" text="Medio">
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin></Button>
+      <Button onAction="#startMediumGame" prefHeight="31.0" prefWidth="65.0" text="Medio">
          <font>
             <Font size="15.0" />
-         </font></Button>
-      <Button onAction="#startHardGame" text="Alto">
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin></Button>
+      <Button onAction="#startHardGame" prefHeight="31.0" prefWidth="65.0" text="Alto">
          <font>
             <Font size="15.0" />
-         </font></Button>
-      <Button onAction="#goBack" text="Indietro">
+         </font>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin></Button>
+      <Button onAction="#goBack" prefHeight="37.0" prefWidth="91.0" text="Indietro">
          <font>
             <Font size="15.0" />
          </font></Button>

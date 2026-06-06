@@ -17,7 +17,7 @@ public abstract class Entity {
     }
 
     public void takeDamage(int damage) {
-        health -= damage;
+        health = Math.max(0, health - damage);
     }
 
     // Solo Player

@@ -1,25 +1,22 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
-import it.unicam.cs.mpgc.rpg129691.model.combat.CombatLog;
+import it.unicam.cs.mpgc.rpg129691.model.combat.CombatResult;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.hint.HintGenerator;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatSystem;
-import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 import it.unicam.cs.mpgc.rpg129691.model.room.EmptyRoom;
 import it.unicam.cs.mpgc.rpg129691.model.room.Room;
 import it.unicam.cs.mpgc.rpg129691.model.room.RoomResult;
+import it.unicam.cs.mpgc.rpg129691.model.room.RoomResultType;
 
 public class GameEngine {
     private final DungeonMap map;
     private final Player player;
     private final CombatSystem combatSystem;
     private final HintGenerator hintGenerator;
-    private CombatLog lastCombatLog;
-    private Hint lastHint;
-    private GameEvent lastEvent;
     private GameState gameState;
 
     public GameEngine(DungeonMap map, Player player, GameRandom random) {
@@ -30,18 +27,24 @@ public class GameEngine {
         this.gameState = GameState.RUNNING;
     }
 
-    public boolean movePlayer(Direction direction) {
-        lastCombatLog = null;
-        lastHint = null;
+    public GameEvent movePlayer(Direction direction) {
         Position next = nextPosition(direction);
-        if(!map.isInside(next)) return false;
+        if (!map.isInside(next)) {
+            return new GameEvent(
+                    RoomResultType.INVALID_MOVE,
+                    "Non puoi andare in quella direzione.",
+                    null,
+                    null
+            );
+        }
         player.moveTo(next);
         map.visit(next);
         Room room = map.getRoom(next);
         RoomResult result = room.enter(player);
-        handleRoomResult(result);
+        GameEvent event = handleRoomResult(result);
+        updateGameState(result.getType());
         consumeRoom(room, next);
-        return true;
+        return event;
     }
 
     private void consumeRoom(Room room, Position position) {
@@ -61,45 +64,31 @@ public class GameEngine {
         };
     }
 
-    private void handleRoomResult(RoomResult result) {
-        CombatLog log = null;
-        EventType eventType;
-        switch(result.getType()) {
-            case COMBAT -> {
-                log = handleCombat(result.getEnemy());
-                eventType = EventType.COMBAT;
-            }
-            case TREASURE_FOUND -> eventType = EventType.TREASURE;
-            case PLAYER_HEALED -> eventType = EventType.HEAL;
-            case PLAYER_DAMAGED -> {
-                eventType = EventType.TRAP;
-                if(!player.isAlive()) {
-                    gameState = GameState.PLAYER_LOST;
-                }
-            }
-            case PLAYER_ESCAPED -> {
-                eventType = EventType.EXIT;
-                gameState = GameState.PLAYER_WON;
-            }
-            case NOTHING -> eventType = EventType.EMPTY;
-            default -> throw new IllegalStateException();
+    private GameEvent handleRoomResult(RoomResult result) {
+        if(result.getType() == RoomResultType.COMBAT) {
+            return handleCombat(result);
         }
-        lastEvent = new GameEvent(
-                eventType,
-                result.getMessage(),
-                log
-        );
+         return new GameEvent(result.getType(), result.getMessage(), null, null);
     }
 
-    private CombatLog handleCombat(Enemy enemy){
-        lastCombatLog = combatSystem.fight(player, enemy);
+    private GameEvent handleCombat(RoomResult result){
+        CombatResult log = combatSystem.fight(player, result.getEnemy());
+        Hint hint = null;
         if(player.isAlive()){
-            Hint hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
+            hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
             player.addHint(hint);
-            lastHint = hint;
-        } else
+        }
+        return new GameEvent(result.getType(), result.getMessage(), log, hint);
+    }
+
+    private void updateGameState(RoomResultType result) {
+        if(!player.isAlive()) {
             gameState = GameState.PLAYER_LOST;
-        return lastCombatLog;
+            return;
+        }
+        if(result == RoomResultType.PLAYER_ESCAPED) {
+            gameState = GameState.PLAYER_WON;
+        }
     }
 
     public DungeonMap getMap(){
@@ -114,15 +103,4 @@ public class GameEngine {
         return gameState;
     }
 
-    public CombatLog getLastCombatLog() {
-        return lastCombatLog;
-    }
-
-    public Hint getLastHint() {
-        return lastHint;
-    }
-
-    public GameEvent getLastEvent() {
-        return lastEvent;
-    }
 }

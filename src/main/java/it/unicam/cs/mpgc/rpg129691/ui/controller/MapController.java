@@ -4,12 +4,12 @@ import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
-import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +17,9 @@ import java.util.Map;
 public class MapController {
 
     private GameEngine game;
-    private Map<Position, Hint> hintMap = new HashMap<>();
-    @FXML
-    private GridPane mapGrid;
+    private final Map<Position, Hint> hintMap = new HashMap<>();
+    @FXML private GridPane mapGrid;
+    @FXML private Button backButton;
 
     public void setGame(GameEngine game) {
         this.game = game;
@@ -86,9 +86,8 @@ public class MapController {
 
     @FXML
     private void goBack() {
-        FXMLLoader loader = SceneManager.loadScene("/fxml/Game.fxml");
-        GameController controller = loader.getController();
-        controller.setGame(game);
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 
 }
