@@ -13,6 +13,7 @@ public class SceneManager {
 
     public static void initialize(Stage stage) {
         primaryStage = stage;
+        primaryStage.setResizable(false);
     }
 
     public static void switchScene(String fxmlPath) {
@@ -20,6 +21,7 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
+            primaryStage.setResizable(false);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -30,6 +32,7 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource(fxmlPath));
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
+            primaryStage.setResizable(false);
             return loader;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -50,6 +53,7 @@ public class SceneManager {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(new Scene(root));
+        stage.setResizable(false);
         stage.showAndWait();
     }
 }

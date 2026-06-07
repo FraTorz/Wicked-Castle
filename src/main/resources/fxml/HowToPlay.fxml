@@ -6,125 +6,189 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.HowToPlayController">
-   <bottom>
-      <Button mnemonicParsing="false" onAction="#goBack" text="Indietro" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="5.0" />
-         </BorderPane.margin>
-      </Button>
-   </bottom>
+
+    <bottom>
+        <Button onAction="#goBack" text="Indietro" BorderPane.alignment="CENTER">
+
+            <font>
+                <Font size="18" />
+            </font>
+
+            <BorderPane.margin>
+                <Insets bottom="15" top="15" />
+            </BorderPane.margin>
+        </Button>
+    </bottom>
    <top>
-      <VBox alignment="CENTER" prefHeight="94.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="99.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" text="WICKED CASTLE - COME SI GIOCA">
+            <Label text="WICKED CASTLE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label text="Da secoli nessuno è mai riuscito a fuggire dal Wicked Castle.">
+            <Label text="Da secoli nessuno è mai riuscito a fuggire">
                <font>
-                  <Font name="System Bold Italic" size="18.0" />
+                  <Font name="System Bold Italic" size="20.0" />
                </font>
             </Label>
             <Label text="Sarai il primo?">
                <font>
-                  <Font name="System Bold Italic" size="18.0" />
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <Label text="REGOLE DEL GIOCO">
+               <font>
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Label>
          </children>
       </VBox>
    </top>
-   <center>
-      <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <VBox alignment="TOP_CENTER" spacing="10.0">
-               <children>
-                  <Label text="OBIETTIVO" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Sei intrappolato all'interno del Wicked Castle. Il tuo obiettivo è trovare la stanza di uscita e fuggire dal castello prima che i pericoli che lo abitano abbiano la meglio su di te." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="ESPLORAZIONE" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Il castello è composto da una griglia di stanze generate casualmente. Ogni partita è diversa e dipende dal livello di difficoltà selezionato." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="COMBATTIMENTI" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Alcune stanze contengono nemici. Quando incontri un nemico, il combattimento avviene automaticamente. Se sopravvivi, riceverai un indizio utile per trovare l'uscita." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="INDIZI" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Gli indizi forniscono informazioni sulla direzione e sulla distanza dell'uscita rispetto alla posizione in cui sono stati ottenuti." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="EQUIPAGGIAMENTO" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Durante l'esplorazione puoi trovare nuove armi. Un'arma viene equipaggiata automaticamente solo se è migliore di quella attualmente utilizzata." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="VITTORIA" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Trova la Exit Room per vincere la partita." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="SCONFITTA" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Se i tuoi punti salute scendono a zero, la partita termina." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="SALVATAGGI" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label text="Puoi salvare una partita in qualsiasi momento mentre è ancora in corso e riprenderla successivamente dal menu principale." textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-   </center>
+   <right>
+        <ScrollPane fitToWidth="true" pannable="true" prefHeight="112.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+
+            <content>
+
+                <VBox alignment="TOP_CENTER" spacing="18">
+
+                    <padding>
+                        <Insets bottom="15" left="30" right="30" top="15" />
+                    </padding>
+
+                    <!-- OBIETTIVO -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="OBIETTIVO:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Sei intrappolato all'interno del Wicked Castle. Il tuo obiettivo è trovare la stanza di uscita e fuggire dal castello prima che i pericoli che lo abitano abbiano la meglio su di te." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- ESPLORAZIONE -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="ESPLORAZIONE:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Il castello è composto da una griglia di stanze generate casualmente. Ogni partita è diversa e dipende dal livello di difficoltà selezionato." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- COMBATTIMENTI -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="COMBATTIMENTI:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Alcune stanze contengono nemici. Quando incontri un nemico, il combattimento avviene automaticamente. Se sopravvivi riceverai un indizio utile per trovare l'uscita." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- INDIZI -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="INDIZI:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Gli indizi forniscono informazioni sulla direzione e sulla distanza dell'uscita rispetto alla posizione in cui sono stati ottenuti." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- EQUIPAGGIAMENTO -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="EQUIPAGGIAMENTO:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Durante l'esplorazione puoi trovare nuove armi. Un'arma viene equipaggiata automaticamente solo se è migliore di quella attualmente utilizzata." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- VITTORIA -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220.0" text="VITTORIA:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Trova la Exit Room e raggiungila per riuscire a fuggire dal castello e vincere la partita." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- SCONFITTA -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="SCONFITTA:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Se i tuoi punti salute scendono a zero, il tuo personaggio muore e la partita termina immediatamente." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                    <!-- SALVATAGGI -->
+
+                    <HBox alignment="TOP_CENTER" spacing="15">
+                        <Label alignment="TOP_RIGHT" minWidth="220" text="SALVATAGGI:">
+                            <font>
+                                <Font name="System Bold" size="20" />
+                            </font>
+                        </Label>
+
+                        <Label maxWidth="700" text="Puoi salvare una partita in qualsiasi momento mentre è ancora in corso e riprenderla successivamente dal menu principale." wrapText="true">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </HBox>
+
+                </VBox>
+
+            </content>
+
+        </ScrollPane>
+   </right>
+
 </BorderPane>
