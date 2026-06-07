@@ -50,6 +50,6 @@ public class SceneManager {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.showAndWait();
     }
 }

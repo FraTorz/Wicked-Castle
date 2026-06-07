@@ -15,7 +15,7 @@ public class SaveIndex {
            %s
            Difficoltà: %s
            HP: %d
-           %s
+           Salvato il: %s
            """.formatted(saveName, difficulty, playerHealth, saveTime);
     }
 

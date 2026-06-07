@@ -1,11 +1,9 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
-import it.unicam.cs.mpgc.rpg129691.model.game.Direction;
-import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
-import it.unicam.cs.mpgc.rpg129691.model.game.GameEvent;
-import it.unicam.cs.mpgc.rpg129691.model.game.GameState;
+import it.unicam.cs.mpgc.rpg129691.model.game.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.persistence.GamePersistenceService;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
@@ -13,10 +11,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 
 public class GameController {
 
+    private final GamePersistenceService persistence = new GamePersistenceService();
     private GameEngine game;
     private GameEvent lastEvent;
     // left Panel
@@ -38,11 +38,24 @@ public class GameController {
     @FXML private Button mapButton;
     @FXML private Button endButton;
 
-    public void setGame(GameEngine game) {
-        this.game = game;
+    public void initializeGame() {
+        this.game = GameSession.getInstance().getGame();
+        if(game == null) {
+            throw new IllegalStateException("Nessuna partita attiva");
+        }
         refresh();
-        appendLog("Partita iniziata.");
+    }
+
+    public void initializeNewGame() {
+        initializeGame();
+        appendLog("🎮 Partita iniziata");
         appendLog("Ti trovi nella stanza iniziale.");
+    }
+
+    public void initializeLoadedGame() {
+        initializeGame();
+        appendLog("💾 Partita caricata con successo.");
+        appendLog("Esplorazione ripresa");
     }
 
     private void refresh() {
@@ -104,20 +117,22 @@ public class GameController {
     private void move(Direction direction) {
         lastEvent = game.movePlayer(direction);
         appendLog(format(lastEvent));
-        lastEvent.getHint().ifPresent(h -> appendLog("🔎 Indizio ottenuto: " + h.getMessage()));
+        lastEvent.getHint().ifPresent(
+                h -> appendLog("Hai vinto il combattimento!\n🔎 Indizio ottenuto: " + h.getMessage()));
         combatDetailsButton.setVisible(lastEvent.getCombatResult().isPresent());
         refresh();
         checkGameState();
     }
 
+
     private String format(GameEvent event) {
         return switch (event.getType()) {
             case COMBAT -> "⚔️ " + event.getMessage();
-            case TREASURE_FOUND -> "💰 " + event.getMessage();
-            case PLAYER_HEALED -> "❤️ " + event.getMessage();
-            case PLAYER_DAMAGED -> "☠️ " + event.getMessage();
-            case PLAYER_ESCAPED -> "🚪 " + event.getMessage();
-            case INVALID_MOVE -> "❌ " + event.getMessage();
+            case TREASURE_FOUND -> "💰" + event.getMessage();
+            case PLAYER_HEALED -> "❤️" + event.getMessage();
+            case PLAYER_DAMAGED -> "☠️" + event.getMessage();
+            case PLAYER_ESCAPED -> "🚪" + event.getMessage();
+            case INVALID_MOVE -> "❌" + event.getMessage();
             case NOTHING -> event.getMessage();
         };
     }
@@ -178,8 +193,57 @@ public class GameController {
         SceneManager.showPopup(loader.getRoot(), "Dettagli combattimento");
     }
 
+    @FXML
+    private void handleSaveGame() {
+        String name = askSaveName();
+        if (name == null) return;
+        if (name.trim().isBlank()) {
+            AlertUtils.showWarning("Attenzione", "Nome non valido");
+            return;
+        }
+        try {
+            persistence.saveGame(game, name);
+            AlertUtils.showInfo("OK", "Salvataggio completato");
+        }
+        catch (IllegalStateException e) {
+            SaveManagementController controller = handleSaveLimitReached();
+            if(!controller.isDeletedSomething()){
+                AlertUtils.showWarning("Attenzione", "Partita non salvata " +
+                        "causa spazio insufficiente.");
+                return;
+            }
+            try {
+                persistence.saveGame(game, name);
+                AlertUtils.showInfo("OK", "Salvataggio completato dopo eliminazione");
+            } catch (Exception ex) {
+                AlertUtils.showError("Errore", "Impossibile salvare dopo eliminazione");
+            }
+        } catch (IllegalArgumentException e) {
+            AlertUtils.showError("Errore", "Nome già esistente");
+        } catch (Exception e) {
+            AlertUtils.showError("Errore", "Errore durante il salvataggio");
+        }
+    }
+
+    private SaveManagementController handleSaveLimitReached(){
+        AlertUtils.showWarning("Attenzione", "Limite salvataggi raggiunto. " +
+                "Elimina almeno una partita per salvare quella corrente.");
+        FXMLLoader loader = SceneManager.loadFXML("/fxml/SaveManagement.fxml");
+        SaveManagementController controller = loader.getController();
+        controller.setMode(SaveMode.GAME_LIMIT);
+        SceneManager.showPopup(loader.getRoot(), "Gestione salvataggi");
+        return controller;
+    }
+
+    private String askSaveName() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Salvataggio partita");
+        dialog.setHeaderText("Inserisci il nome del salvataggio");
+        dialog.setContentText("Nome:");
+        return dialog.showAndWait().orElse(null);
+    }
+
     private void appendLog(String message) {
         eventLogArea.appendText(message + "\n");
     }
-
 }

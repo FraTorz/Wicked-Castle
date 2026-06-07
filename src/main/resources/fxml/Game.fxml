@@ -17,7 +17,7 @@
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" spacing="50.0">
                <children>
                   <Button fx:id="mapButton" mnemonicParsing="false" onAction="#handleMap" text="Visualizza Mappa" />
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Salva Paritita" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveGame" text="Salva Paritita" />
                   <Button fx:id="endButton" mnemonicParsing="false" onAction="#handleEndGame" text="Termina Partita" />
                </children>
             </HBox>

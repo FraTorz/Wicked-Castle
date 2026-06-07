@@ -42,7 +42,9 @@ public class SaveManager {
         List<SaveIndex> result = new ArrayList<>();
         List<Path> files;
         try(Stream<Path> stream = Files.list(SAVE_DIR)) {
-            files = stream.toList();
+            files = stream
+                    .filter(path -> path.toString().endsWith(".json"))
+                    .toList();
         }
         for(Path file : files) {
             String json = Files.readString(file);

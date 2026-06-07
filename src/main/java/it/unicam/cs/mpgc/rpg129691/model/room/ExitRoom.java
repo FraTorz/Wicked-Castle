@@ -8,7 +8,7 @@ public class ExitRoom implements Room{
         return new RoomResult(
                 RoomResultType.PLAYER_ESCAPED,
                 null,
-                "Hai trovato l'uscita!"
+                "Proprio quando credevi di non farcela..."
         );
     }
 

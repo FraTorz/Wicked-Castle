@@ -27,7 +27,7 @@ public class GamePersistenceService {
         }
         SaveData data = saveDataFactory.create(game);
         data.setSaveName(saveName);
-        data.setSaveTime(LocalDateTime.now().toString());
+        data.setSaveTime(LocalDateTime.now().toString().replace("T", " "));
         saveManager.save(data);
     }
 

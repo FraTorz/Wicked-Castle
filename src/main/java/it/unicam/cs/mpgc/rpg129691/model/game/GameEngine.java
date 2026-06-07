@@ -72,13 +72,13 @@ public class GameEngine {
     }
 
     private GameEvent handleCombat(RoomResult result){
-        CombatResult log = combatSystem.fight(player, result.getEnemy());
+        CombatResult combatResult = combatSystem.fight(player, result.getEnemy());
         Hint hint = null;
         if(player.isAlive()){
             hint = hintGenerator.generate(player.getPosition(), map.getExitPosition());
             player.addHint(hint);
         }
-        return new GameEvent(result.getType(), result.getMessage(), log, hint);
+        return new GameEvent(result.getType(), result.getMessage(), combatResult, hint);
     }
 
     private void updateGameState(RoomResultType result) {

@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg129691.ui.controller;
 import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameFactory;
+import it.unicam.cs.mpgc.rpg129691.model.game.GameSession;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,8 +32,9 @@ public class DifficultySelectionController {
 
     private void startGame(Difficulty difficulty) {
         GameEngine game = gameFactory.createNewGame(difficulty);
+        GameSession.getInstance().setGame(game);
         FXMLLoader loader = SceneManager.switchSceneAndGetLoader("/fxml/Game.fxml");
         GameController controller = loader.getController();
-        controller.setGame(game);
+        controller.initializeNewGame();
     }
 }
