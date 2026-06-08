@@ -12,31 +12,29 @@ public abstract class Entity implements SpriteProvider {
         this.health = health;
     }
 
-    public abstract String getSpritePath();
-
-    public String getDisplayName() {
+    public String getDisplayName(){
         return displayName;
     }
 
-    public int getHealth() {
+    public int getHealth(){
         return health;
     }
 
-    public void takeDamage(int damage) {
+    public void takeDamage(int damage){
         health = Math.max(0, health - damage);
     }
 
-    public boolean isAlive() {
+    public boolean isAlive(){
         return health > 0;
     }
 
     public abstract int getMinDamage();
     public abstract int getMaxDamage();
 
-    protected void increaseHealth(int amount) {
+    protected void increaseHealth(int amount){
         this.health += amount;
     }
-    protected void setHealth(int health) {
+    protected void setHealth(int health){
         this.health = health;
     }
 }

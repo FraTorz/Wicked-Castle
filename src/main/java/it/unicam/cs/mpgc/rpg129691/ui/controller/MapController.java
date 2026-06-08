@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.ui.render.MapRenderer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ public class MapController {
 
     public void setGame(GameEngine game) {
         this.game = game;
-        renderMap();
+        MapRenderer.renderFullMap(mapGrid);
     }
 
     private void renderMap() {

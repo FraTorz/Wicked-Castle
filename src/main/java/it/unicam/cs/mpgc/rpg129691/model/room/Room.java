@@ -11,15 +11,5 @@ public interface Room {
 
     default boolean isConsumable() { return true; }
 
-    default Optional<SpriteProvider> getOverlaySprite() {
-        return Optional.empty();
-    }
-
-    default RoomState saveState() {
-        return RoomState.EMPTY;
-    }
-
-    default void loadState(RoomState state) {
-        // default no-op
-    }
+    Optional<SpriteProvider> getOverlaySprite();
 }

@@ -26,10 +26,6 @@ public class TreasureRoom implements Room {
         );
     }
 
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
     @Override
     public Optional<SpriteProvider> getOverlaySprite() {
         return Optional.of(weapon);

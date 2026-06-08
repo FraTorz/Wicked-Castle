@@ -5,7 +5,8 @@ public enum FixedSprite implements SpriteProvider {
     HERO("/img/hero.png"),
     POTION("/img/potion.png"),
     TRAP("/img/trap.png"),
-    EXIT("/img/door.png");
+    EXIT("/img/door.png"),
+    HINT("/img/hint.png");
 
     private final String path;
 

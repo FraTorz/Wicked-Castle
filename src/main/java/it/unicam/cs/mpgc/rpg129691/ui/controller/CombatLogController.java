@@ -28,7 +28,7 @@ public class CombatLogController {
     }
     private String format(CombatEntry e) {
         return "- " + e.getAttacker().getDisplayName()
-                + " -> "
+                + " infligge "
                 + e.getDamage()
                 + " danni a "
                 + e.getDefender().getDisplayName();

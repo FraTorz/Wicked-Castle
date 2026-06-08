@@ -1,0 +1,9 @@
+.custom-tooltip {
+    -fx-font-size: 15px;          /* Dimensione del testo molto grande */
+    -fx-font-weight: bold;        /* Testo in grassetto */
+    -fx-background-color: #333333; /* Sfondo scuro moderno */
+    -fx-text-fill: #ffffff;       /* Testo bianco */
+    -fx-padding: 12px;            /* Spazio interno intorno al testo */
+    -fx-wrap-text: true;          /* Va a capo da solo se è lungo */
+    -fx-background-radius: 8px;   /* Angoli arrotondati del rettangolo */
+}

@@ -1,28 +1,16 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.*;
-import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
-import it.unicam.cs.mpgc.rpg129691.model.map.Position;
-import it.unicam.cs.mpgc.rpg129691.model.room.Room;
 import it.unicam.cs.mpgc.rpg129691.persistence.GamePersistenceService;
-import it.unicam.cs.mpgc.rpg129691.ui.render.BaseTileType;
-import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
-import it.unicam.cs.mpgc.rpg129691.ui.render.TileFactory;
+import it.unicam.cs.mpgc.rpg129691.ui.render.MapRenderer;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class GameController {
 
@@ -34,7 +22,8 @@ public class GameController {
     @FXML private Label hpLabel;
     @FXML private Label weaponLabel;
     // bottom Panel
-    @FXML private TextArea eventLogArea;
+    @FXML public ScrollPane logScrollPane;
+    @FXML public TextFlow eventLogFlow;
     @FXML private Button combatDetailsButton;
     // center Panel
     @FXML private GridPane mapGrid;
@@ -47,8 +36,6 @@ public class GameController {
     @FXML private Button saveButton;
     @FXML private Button mapButton;
     @FXML private Button endButton;
-    // map render
-    private static final int TILE_SIZE = 128;
 
     public void initializeGame() {
         this.game = GameSession.getInstance().getGame();
@@ -60,87 +47,14 @@ public class GameController {
 
     public void initializeNewGame() {
         initializeGame();
-        appendLog("🎮 Partita iniziata");
-        appendLog("Ti trovi nella stanza iniziale.");
+        appendLog("🎮", "Partita iniziata", "#FFFFFF");
+        appendLog("•", "Ti trovi nella stanza iniziale.", "#FFFFFF");
     }
 
     public void initializeLoadedGame() {
         initializeGame();
-        appendLog("💾 Partita caricata con successo.");
-        appendLog("Esplorazione ripresa");
-    }
-
-    private void refresh() {
-        difficultyLabel.setText(game.getMap().getDifficulty().toString());
-        hpLabel.setText(String.valueOf(game.getPlayer().getHealth()));
-        weaponLabel.setText(game.getPlayer().getEquippedWeapon().getName());
-        renderMap();
-    }
-
-    private void renderMap() {
-        mapGrid.getChildren().clear();
-        Position player = game.getPlayer().getPosition();
-        setupGrid(3);
-        int playerRow = player.getRow();
-        int playerCol = player.getColumn();
-        for (int r = -1; r <= 1; r++) {
-            for (int c = -1; c <= 1; c++) {
-                int worldRow = playerRow + r;
-                int worldCol = playerCol + c;
-                Position pos = new Position(worldRow, worldCol);
-                BaseTileType base = getBaseTileType(pos);
-                List<SpriteProvider> overlays = getOverlaysFor(pos);
-                StackPane tile = TileFactory.createTile(base, overlays);
-                tile.setMinSize(TILE_SIZE, TILE_SIZE);
-                tile.setPrefSize(TILE_SIZE, TILE_SIZE);
-                tile.setMaxSize(TILE_SIZE, TILE_SIZE);
-                mapGrid.add(tile, c + 1, r + 1);
-            }
-        }
-    }
-
-    private BaseTileType getBaseTileType(Position pos) {
-        DungeonMap map = game.getMap();
-        if (!map.isInside(pos)) {
-            return BaseTileType.WALL;
-        }
-        if (!map.isVisited(pos)) {
-            return BaseTileType.UNKNOWN;
-        }
-        return BaseTileType.FLOOR;
-    }
-
-    private List<SpriteProvider> getOverlaysFor(Position pos) {
-        List<SpriteProvider> overlays = new ArrayList<>();
-        DungeonMap map = game.getMap();
-        if(!map.isInside(pos))
-            return overlays;
-        if (!map.isVisited(pos) && !pos.equals(game.getPlayer().getPosition())) {
-            return overlays;
-        }
-        if (pos.equals(game.getPlayer().getPosition())) {
-            overlays.add(game.getPlayer());
-        }
-        Room room = map.getRoom(pos);
-        room.getOverlaySprite().ifPresent(overlays::add);
-        return overlays;
-    }
-
-    private void setupGrid(int size) {
-        mapGrid.getColumnConstraints().clear();
-        mapGrid.getRowConstraints().clear();
-        for (int i = 0; i < size; i++) {
-            ColumnConstraints col = new ColumnConstraints(TILE_SIZE);
-            RowConstraints row = new RowConstraints(TILE_SIZE);
-            col.setMinWidth(TILE_SIZE);
-            col.setPrefWidth(TILE_SIZE);
-            col.setMaxWidth(TILE_SIZE);
-            row.setMinHeight(TILE_SIZE);
-            row.setPrefHeight(TILE_SIZE);
-            row.setMaxHeight(TILE_SIZE);
-            mapGrid.getColumnConstraints().add(col);
-            mapGrid.getRowConstraints().add(row);
-        }
+        appendLog("💾", "Partita caricata con successo.", "#FFFFFF");
+        appendLog("•", "Esplorazione ripresa", "#FFFFFF");
     }
 
     @FXML
@@ -162,38 +76,47 @@ public class GameController {
 
     private void move(Direction direction) {
         lastEvent = game.movePlayer(direction);
-        appendLog(format(lastEvent));
-        lastEvent.getHint().ifPresent(
-                h -> appendLog("Hai vinto il combattimento!\n🔎 Indizio ottenuto: " + h.getMessage()));
+        lastEvent.getHint().ifPresent(h -> {
+            appendLog("🔎",
+                    "Hai vinto il combattimento! Indizio ottenuto: " + h.getMessage(),
+                    "#FFD700");
+        });
+        logGameEvent(lastEvent);
         combatDetailsButton.setVisible(lastEvent.getCombatResult().isPresent());
         refresh();
         checkGameState();
     }
 
+    private void logGameEvent(GameEvent event) {
+        switch (event.getType()) {
+            case COMBAT -> appendLog("⚔️", event.getMessage(), "#E57373");       // Rosso chiaro
+            case TREASURE_FOUND -> appendLog("💰", event.getMessage(), "#4FC3F7"); // Azzurro cura
+            case PLAYER_HEALED -> appendLog("❤️", event.getMessage(), "#81C784");  // Verde chiaro
+            case PLAYER_DAMAGED -> appendLog("☠️", event.getMessage(), "#FF8A65"); // Arancione scuro
+            case PLAYER_ESCAPED -> appendLog("🚪", event.getMessage(), "#BA68C8"); // Viola fuga
+            case INVALID_MOVE -> appendLog("❌", event.getMessage(), "#FFB74D");   // Arancione errore
+            case NOTHING -> appendLog("•", event.getMessage(), "#FFFFFF");         // Bianco normale
+        }
+    }
 
-    private String format(GameEvent event) {
-        return switch (event.getType()) {
-            case COMBAT -> "⚔️ " + event.getMessage();
-            case TREASURE_FOUND -> "💰" + event.getMessage();
-            case PLAYER_HEALED -> "❤️" + event.getMessage();
-            case PLAYER_DAMAGED -> "☠️" + event.getMessage();
-            case PLAYER_ESCAPED -> "🚪" + event.getMessage();
-            case INVALID_MOVE -> "❌" + event.getMessage();
-            case NOTHING -> event.getMessage();
-        };
+    private void refresh() {
+        difficultyLabel.setText(game.getMap().getDifficulty().toString());
+        hpLabel.setText(String.valueOf(game.getPlayer().getHealth()));
+        weaponLabel.setText(game.getPlayer().getEquippedWeapon().getName());
+        MapRenderer.renderViewPort(mapGrid);
     }
 
     private void checkGameState() {
         switch (game.getGameState()) {
             case PLAYER_WON -> {
-                appendLog("🎉 Hai trovato l'uscita! Hai vinto!");
+                appendLog("🎉", "Hai trovato l'uscita! Hai vinto!", "#FFD700");
                 disableInput();
             }
-            case PLAYER_LOST -> {
-                appendLog("💀 Sei morto. Game Over.");
+            case PLAYER_LOST ->{
+                appendLog("💀", "Sei morto. Game Over.", "#FF0000");
                 disableInput();
             }
-            default -> { }
+            default -> {}
         }
     }
 
@@ -289,7 +212,14 @@ public class GameController {
         return dialog.showAndWait().orElse(null);
     }
 
-    private void appendLog(String message) {
-        eventLogArea.appendText(message + "\n");
+    private void appendLog(String emoji, String message, String colorHex) {
+        Text emojiText = new Text(emoji + " ");
+        emojiText.setStyle("-fx-font-family: 'Segoe UI Emoji'; -fx-font-size: 18px;");
+        Text messageText = new Text(message + "\n");
+        messageText.setStyle("-fx-fill: " + colorHex + "; -fx-font-size: 15px; -fx-font-weight: bold;");
+        eventLogFlow.getChildren().addFirst(messageText);
+        eventLogFlow.getChildren().addFirst(emojiText);
+        logScrollPane.setVvalue(0.0);
     }
+
 }

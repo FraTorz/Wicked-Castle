@@ -7,4 +7,5 @@ public interface SpriteProvider {
     default boolean isPlayer(){
         return false;
     }
+
 }

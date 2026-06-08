@@ -26,6 +26,7 @@ public class GameEngine {
     }
 
     public GameEvent movePlayer(Direction direction) {
+        consumeCurrentRoom();
         Position next = nextPosition(direction);
         if (!map.isInside(next)) {
             return new GameEvent(
@@ -42,6 +43,12 @@ public class GameEngine {
         GameEvent event = handleRoomResult(result);
         updateGameState(result.getType());
         return event;
+    }
+
+    private void consumeCurrentRoom(){
+        Position current = player.getPosition();
+        if(map.getRoom(current).isConsumable())
+            map.setRoom(current, new EmptyRoom());
     }
 
     private Position nextPosition(Direction direction){

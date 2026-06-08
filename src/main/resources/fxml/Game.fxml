@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -103,22 +102,21 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="95.0" prefWidth="294.0">
+            <StackPane prefHeight="95.0" prefWidth="294.0">
                <children>
-                  <Button fx:id="combatDetailsButton" contentDisplay="CENTER" layoutX="2.0" layoutY="16.0" mnemonicParsing="false" onAction="#showCombatDetails" prefHeight="56.0" prefWidth="92.0" text="Dettagli combattimento" textAlignment="CENTER" visible="false" wrapText="true">
+                  <Button fx:id="combatDetailsButton" contentDisplay="CENTER" layoutX="2.0" layoutY="16.0" mnemonicParsing="false" onAction="#showCombatDetails" prefHeight="80.0" prefWidth="200.0" text="Dettagli combattimento" textAlignment="CENTER" visible="false" wrapText="true">
                      <font>
-                        <Font size="11.0" />
+                        <Font size="15.0" />
                      </font>
                   </Button>
-               </children></Pane>
-            <TextArea fx:id="eventLogArea" editable="false" prefHeight="120.0" prefWidth="471.0" wrapText="true">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
-               </HBox.margin>
-            </TextArea>
+               </children>
+            </StackPane>
+            <ScrollPane fx:id="logScrollPane" fitToWidth="true" prefHeight="95.0" prefWidth="372.0">
+               <content>
+                  <TextFlow fx:id="eventLogFlow" style="-fx-padding: 10px; -fx-background-color: #1e1e1e;" />
+               </content>
+            </ScrollPane>
+
             <Pane layoutX="10.0" layoutY="10.0" prefHeight="95.0" prefWidth="293.0" />
          </children>
       </HBox>
