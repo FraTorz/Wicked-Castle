@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg129691.model.item;
 
-public abstract class Weapon {
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+
+public abstract class Weapon implements SpriteProvider {
     private final String name;
     private final int minDamage;
     private final int maxDamage;

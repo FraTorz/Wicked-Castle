@@ -1,13 +1,25 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
 
-public interface Room{
+import java.util.Optional;
 
-     RoomResult enter(Player player);
+public interface Room {
 
-    default boolean isConsumable(){
-        return true;
+    RoomResult enter(Player player);
+
+    default boolean isConsumable() { return true; }
+
+    default Optional<SpriteProvider> getOverlaySprite() {
+        return Optional.empty();
     }
 
+    default RoomState saveState() {
+        return RoomState.EMPTY;
+    }
+
+    default void loadState(RoomState state) {
+        // default no-op
+    }
 }

@@ -6,4 +6,9 @@ public class Knife extends Weapon{
         super("Knife", 3, 7);
     }
 
+    @Override
+    public String getSpritePath() {
+        return "/img/knife.png";
+    }
+
 }

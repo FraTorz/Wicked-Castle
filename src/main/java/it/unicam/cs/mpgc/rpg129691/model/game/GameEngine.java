@@ -1,16 +1,14 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatResult;
+import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.hint.HintGenerator;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatSystem;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
-import it.unicam.cs.mpgc.rpg129691.model.room.EmptyRoom;
-import it.unicam.cs.mpgc.rpg129691.model.room.Room;
-import it.unicam.cs.mpgc.rpg129691.model.room.RoomResult;
-import it.unicam.cs.mpgc.rpg129691.model.room.RoomResultType;
+import it.unicam.cs.mpgc.rpg129691.model.room.*;
 
 public class GameEngine {
     private final DungeonMap map;
@@ -43,15 +41,7 @@ public class GameEngine {
         RoomResult result = room.enter(player);
         GameEvent event = handleRoomResult(result);
         updateGameState(result.getType());
-        consumeRoom(room, next);
         return event;
-    }
-
-    private void consumeRoom(Room room, Position position) {
-        if(gameState != GameState.RUNNING) return;
-        if(room.isConsumable()) {
-            map.setRoom(position, new EmptyRoom());
-        }
     }
 
     private Position nextPosition(Direction direction){

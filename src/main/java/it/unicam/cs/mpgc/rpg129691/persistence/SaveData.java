@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg129691.persistence;
 import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.model.room.RoomState;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ public class SaveData {
     private Set<Hint> hints;
     private String saveName;
     private String saveTime;
+    private RoomState[][] roomStates;
 
     public long getSeed() {
         return seed;

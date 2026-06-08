@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.HowToPlayController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.HowToPlayController">
 
     <bottom>
         <Button onAction="#goBack" text="Indietro" BorderPane.alignment="CENTER">
@@ -46,11 +46,11 @@
       </VBox>
    </top>
    <right>
-        <ScrollPane fitToWidth="true" pannable="true" prefHeight="112.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <ScrollPane fitToWidth="true" pannable="true" prefHeight="411.0" prefWidth="801.0" BorderPane.alignment="CENTER">
 
             <content>
 
-                <VBox alignment="TOP_CENTER" spacing="18">
+                <VBox alignment="TOP_CENTER" prefHeight="807.0" prefWidth="581.0" spacing="18">
 
                     <padding>
                         <Insets bottom="15" left="30" right="30" top="15" />

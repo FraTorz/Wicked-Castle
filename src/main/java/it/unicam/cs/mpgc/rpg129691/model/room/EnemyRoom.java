@@ -2,6 +2,9 @@ package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+
+import java.util.Optional;
 
 public class EnemyRoom implements Room{
     private final Enemy enemy;
@@ -21,5 +24,10 @@ public class EnemyRoom implements Room{
 
     public Enemy getEnemy() {
         return enemy;
+    }
+
+    @Override
+    public Optional<SpriteProvider> getOverlaySprite() {
+        return Optional.of(enemy);
     }
 }

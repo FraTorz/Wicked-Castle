@@ -1,6 +1,10 @@
 package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
+import it.unicam.cs.mpgc.rpg129691.ui.render.FixedSprite;
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+
+import java.util.Optional;
 
 public class HealingRoom implements Room{
     private final int healingPoints;
@@ -17,6 +21,11 @@ public class HealingRoom implements Room{
                 null,
                 "Hai guadagnato " + healingPoints + " punti vita."
         );
+    }
+
+    @Override
+    public Optional<SpriteProvider> getOverlaySprite() {
+        return Optional.of(FixedSprite.POTION);
     }
 
 }

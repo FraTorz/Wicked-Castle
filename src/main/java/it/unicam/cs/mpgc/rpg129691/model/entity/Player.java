@@ -28,6 +28,16 @@ public class Player extends Entity{
     }
 
     @Override
+    public String getSpritePath() {
+        return "/img/hero.png";
+    }
+
+    @Override
+    public boolean isPlayer(){
+        return true;
+    }
+
+    @Override
     public int getMinDamage() {
         return equippedWeapon.getMinDamage();
     }

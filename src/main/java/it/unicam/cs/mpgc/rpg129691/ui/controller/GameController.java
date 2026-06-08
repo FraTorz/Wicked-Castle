@@ -3,7 +3,11 @@ package it.unicam.cs.mpgc.rpg129691.ui.controller;
 import it.unicam.cs.mpgc.rpg129691.model.game.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.model.room.Room;
 import it.unicam.cs.mpgc.rpg129691.persistence.GamePersistenceService;
+import it.unicam.cs.mpgc.rpg129691.ui.render.BaseTileType;
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+import it.unicam.cs.mpgc.rpg129691.ui.render.TileFactory;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
@@ -12,7 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
 
@@ -37,6 +47,8 @@ public class GameController {
     @FXML private Button saveButton;
     @FXML private Button mapButton;
     @FXML private Button endButton;
+    // map render
+    private static final int TILE_SIZE = 128;
 
     public void initializeGame() {
         this.game = GameSession.getInstance().getGame();
@@ -67,33 +79,67 @@ public class GameController {
 
     private void renderMap() {
         mapGrid.getChildren().clear();
-        int playerRow = game.getPlayer().getPosition().getRow();
-        int playerCol = game.getPlayer().getPosition().getColumn();
-        DungeonMap map = game.getMap();
+        Position player = game.getPlayer().getPosition();
+        setupGrid(3);
+        int playerRow = player.getRow();
+        int playerCol = player.getColumn();
         for (int r = -1; r <= 1; r++) {
             for (int c = -1; c <= 1; c++) {
                 int worldRow = playerRow + r;
                 int worldCol = playerCol + c;
-                Label cell = new Label();
-                cell.setMinSize(40, 40);
-                cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                cell.setStyle("""
-                    -fx-border-color: black;
-                    -fx-alignment: center;
-                """);
-                if (r == 0 && c == 0) {
-                    cell.setText("P");
-                } else if (map.isInside(new Position(worldRow, worldCol))) {
-                    if (map.isVisited(new Position(worldRow, worldCol))) {
-                        cell.setText("·");
-                    } else {
-                        cell.setText("?");
-                    }
-                } else {
-                    cell.setText("X");
-                }
-                mapGrid.add(cell, c + 1, r + 1);
+                Position pos = new Position(worldRow, worldCol);
+                BaseTileType base = getBaseTileType(pos);
+                List<SpriteProvider> overlays = getOverlaysFor(pos);
+                StackPane tile = TileFactory.createTile(base, overlays);
+                tile.setMinSize(TILE_SIZE, TILE_SIZE);
+                tile.setPrefSize(TILE_SIZE, TILE_SIZE);
+                tile.setMaxSize(TILE_SIZE, TILE_SIZE);
+                mapGrid.add(tile, c + 1, r + 1);
             }
+        }
+    }
+
+    private BaseTileType getBaseTileType(Position pos) {
+        DungeonMap map = game.getMap();
+        if (!map.isInside(pos)) {
+            return BaseTileType.WALL;
+        }
+        if (!map.isVisited(pos)) {
+            return BaseTileType.UNKNOWN;
+        }
+        return BaseTileType.FLOOR;
+    }
+
+    private List<SpriteProvider> getOverlaysFor(Position pos) {
+        List<SpriteProvider> overlays = new ArrayList<>();
+        DungeonMap map = game.getMap();
+        if(!map.isInside(pos))
+            return overlays;
+        if (!map.isVisited(pos) && !pos.equals(game.getPlayer().getPosition())) {
+            return overlays;
+        }
+        if (pos.equals(game.getPlayer().getPosition())) {
+            overlays.add(game.getPlayer());
+        }
+        Room room = map.getRoom(pos);
+        room.getOverlaySprite().ifPresent(overlays::add);
+        return overlays;
+    }
+
+    private void setupGrid(int size) {
+        mapGrid.getColumnConstraints().clear();
+        mapGrid.getRowConstraints().clear();
+        for (int i = 0; i < size; i++) {
+            ColumnConstraints col = new ColumnConstraints(TILE_SIZE);
+            RowConstraints row = new RowConstraints(TILE_SIZE);
+            col.setMinWidth(TILE_SIZE);
+            col.setPrefWidth(TILE_SIZE);
+            col.setMaxWidth(TILE_SIZE);
+            row.setMinHeight(TILE_SIZE);
+            row.setPrefHeight(TILE_SIZE);
+            row.setMaxHeight(TILE_SIZE);
+            mapGrid.getColumnConstraints().add(col);
+            mapGrid.getRowConstraints().add(row);
         }
     }
 

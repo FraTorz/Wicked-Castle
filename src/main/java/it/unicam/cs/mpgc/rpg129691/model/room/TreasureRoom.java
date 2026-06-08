@@ -2,6 +2,9 @@ package it.unicam.cs.mpgc.rpg129691.model.room;
 
 import it.unicam.cs.mpgc.rpg129691.model.item.Weapon;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+
+import java.util.Optional;
 
 public class TreasureRoom implements Room {
     private final Weapon weapon;
@@ -23,4 +26,12 @@ public class TreasureRoom implements Room {
         );
     }
 
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    @Override
+    public Optional<SpriteProvider> getOverlaySprite() {
+        return Optional.of(weapon);
+    }
 }

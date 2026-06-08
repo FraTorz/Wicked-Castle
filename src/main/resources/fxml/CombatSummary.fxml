@@ -6,45 +6,45 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.CombatSummaryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg129691.ui.controller.CombatSummaryController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="130.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="160.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="EROE">
                <font>
-                  <Font size="30.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
             <Label layoutX="10.0" layoutY="10.0" text="VS">
                <font>
-                  <Font size="24.0" />
+                  <Font size="30.0" />
                </font>
             </Label>
             <Label fx:id="enemyTopLabel" layoutX="38.0" layoutY="10.0" text="NEMICO">
                <font>
-                  <Font size="30.0" />
+                  <Font size="40.0" />
                </font>
             </Label>
          </children>
       </HBox>
    </top>
    <left>
-      <ImageView fx:id="playerImageView" fitHeight="261.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fx:id="playerImageView" fitHeight="438.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <ImageView fx:id="enemyImageView" fitHeight="260.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fx:id="enemyImageView" fitHeight="438.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </right>
    <bottom>
-      <HBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" spacing="70.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" text="Indietro" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="showLogButton" mnemonicParsing="false" onAction="#handleShowCombatLog" prefHeight="31.0" prefWidth="162.0" text="Mostra log completo" textAlignment="CENTER">
+            <Button fx:id="showLogButton" mnemonicParsing="false" onAction="#handleShowCombatLog" prefHeight="44.0" prefWidth="270.0" text="Mostra log combattimento" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
          </children>
@@ -61,23 +61,23 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
             <Label fx:id="turnsLabel" layoutX="96.0" layoutY="153.0" text="Turni: 4" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font></Label>
             <Label fx:id="damageDealtLabel" layoutX="96.0" layoutY="145.0" text="Danni inflitti: 20" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font></Label>
             <Label fx:id="damageTakenLabel" layoutX="96.0" layoutY="136.0" text="Danni subiti: 10" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
             <Label fx:id="playerHpLabel" layoutX="96.0" layoutY="162.0" text="HP finali eroe: 40" textAlignment="CENTER">
@@ -85,7 +85,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
             <Label layoutX="96.0" layoutY="170.0">
@@ -94,11 +94,11 @@
                </font></Label>
             <Label layoutX="85.0" layoutY="179.0" text="Vincitore:" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font></Label>
             <Label fx:id="winnerLabel" layoutX="59.0" layoutY="222.0" text="EROE" textAlignment="CENTER">
                <font>
-                  <Font size="15.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
          </children>

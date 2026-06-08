@@ -13,6 +13,8 @@ public abstract class Enemy extends Entity {
     private final int minDamage;
     private final int maxDamage;
 
+    public abstract String getSpritePath();
+
     @Override
     public int getMinDamage() { return minDamage; }
 

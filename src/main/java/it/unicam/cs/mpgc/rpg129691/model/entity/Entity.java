@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg129691.model.entity;
 
-public abstract class Entity {
+import it.unicam.cs.mpgc.rpg129691.ui.render.SpriteProvider;
+
+public abstract class Entity implements SpriteProvider {
 
     private final String displayName;
     private int health;
@@ -9,6 +11,8 @@ public abstract class Entity {
         this.displayName = displayName;
         this.health = health;
     }
+
+    public abstract String getSpritePath();
 
     public String getDisplayName() {
         return displayName;
