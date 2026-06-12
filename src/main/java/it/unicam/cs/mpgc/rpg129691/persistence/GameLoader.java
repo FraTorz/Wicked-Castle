@@ -12,10 +12,10 @@ public class GameLoader {
     private final GameFactory gameFactory = new GameFactory();
 
     public GameEngine load(SaveData data) {
-        GameEngine game = gameFactory.createNewGame(data.getDifficulty(), data.getSeed());
+        GameEngine game = gameFactory.createSpecificGame(data.getDifficulty(), data.getSeed());
         DungeonMap map = game.getMap();
-        Player player = game.getPlayer();
         map.restoreVisitedPositions(data.getVisitedPositions());
+        Player player = game.getPlayer();
         restorePlayer(player, data);
         return game;
     }
@@ -28,4 +28,5 @@ public class GameLoader {
         player.restoreHints(data.getHints());
 
     }
+
 }

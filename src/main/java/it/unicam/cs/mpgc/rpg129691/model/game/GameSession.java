@@ -22,7 +22,4 @@ public class GameSession {
         this.currentGame = game;
     }
 
-    public boolean hasGame() {
-        return currentGame != null;
-    }
 }

@@ -7,11 +7,33 @@ import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
 import java.util.Set;
 
-public class Player extends Entity{
+/**
+ * Rappresenta il giocatore controllato dall'utente.
+ *
+ * Il giocatore possiede:
+ * <ul>
+ *     <li>una posizione all'interno della mappa</li>
+ *     <li>un'arma equipaggiata</li>
+ *     <li>un registro degli indizi ottenuti</li>
+ * </ul>
+ *
+ * Le capacità offensive dipendono dall'arma attualmente equipaggiata.
+ */
+public class Player extends Entity {
+
     private Position position;
     private Weapon equippedWeapon;
     private final HintLog hintLog;
 
+    /**
+     * Crea un nuovo giocatore.
+     *
+     * Il giocatore viene inizializzato con un coltello come
+     * arma di partenza e con un registro degli indizi vuoto.
+     *
+     * @param health salute iniziale
+     * @param position posizione iniziale nella mappa
+     */
     public Player(int health, Position position) {
         super("EROE", health);
         this.position = position;
@@ -19,67 +41,148 @@ public class Player extends Entity{
         this.hintLog = new HintLog();
     }
 
-    public boolean equipWeapon(Weapon newWeapon){
-        if(newWeapon.getMaxDamage() > equippedWeapon.getMaxDamage()) {
+    /**
+     * Equipaggia una nuova arma soltanto se risulta migliore
+     * di quella attualmente equipaggiata.
+     *
+     * @param newWeapon arma trovata
+     * @return true se l'arma è stata equipaggiata, false altrimenti
+     */
+    public boolean equipWeapon(Weapon newWeapon) {
+        boolean betterWeapon = newWeapon.getMaxDamage() > equippedWeapon.getMaxDamage();
+        if (betterWeapon) {
             equippedWeapon = newWeapon;
-            return true;
         }
-        return false;
+        return betterWeapon;
     }
 
+    /**
+     * Restituisce il percorso dell'immagine associata al giocatore.
+     *
+     * Utilizzato dal sistema di rendering per visualizzare lo sprite
+     * del personaggio sulla mappa.
+     *
+     * @return path della risorsa grafica del giocatore
+     */
     @Override
-    public String getSpritePath() {
+    public String getSpritePath(){
         return "/img/hero.png";
     }
 
+    /**
+     * Indica che questa entità rappresenta il giocatore controllato dall'utente.
+     *
+     * Utilizzato dal sistema di rendering e dalla logica di gioco
+     * per distinguere il player dagli altri tipi di entità.
+     *
+     * @return true perché questa entità è il giocatore
+     */
     @Override
     public boolean isPlayer(){
         return true;
     }
 
+    /**
+     * Restituisce il danno minimo che il giocatore può infliggere.
+     *
+     * Il valore dipende dall'arma attualmente equipaggiata.
+     *
+     * @return danno minimo dell'arma equipaggiata
+     */
     @Override
-    public int getMinDamage() {
+    public int getMinDamage(){
         return equippedWeapon.getMinDamage();
     }
 
+    /**
+     * Restituisce il danno massimo che il giocatore può infliggere.
+     *
+     * Il valore dipende dall'arma attualmente equipaggiata.
+     *
+     * @return danno massimo dell'arma equipaggiata
+     */
     @Override
-    public int getMaxDamage() {
+    public int getMaxDamage(){
         return equippedWeapon.getMaxDamage();
     }
 
-    public void heal(int amount) {
+    /**
+     * Aumenta la salute del giocatore.
+     *
+     * @param amount quantità di salute recuperata
+     */
+    public void heal(int amount){
         super.increaseHealth(amount);
     }
 
-    public void restoreHealth(int health){
-        super.setHealth(health);
-    }
-
-    public void moveTo(Position newPosition) {
+    /**
+     * Aggiorna la posizione del giocatore.
+     *
+     * @param newPosition nuova posizione
+     */
+    public void moveTo(Position newPosition){
         this.position = newPosition;
     }
 
+    /**
+     * Registra un nuovo indizio ottenuto.
+     *
+     * @param hint indizio da aggiungere
+     */
     public void addHint(Hint hint){
         hintLog.add(hint);
     }
 
+    /**
+     * Ripristina il registro degli indizi durante il caricamento
+     * di una partita salvata.
+     *
+     * @param hints insieme degli indizi da ripristinare
+     */
     public void restoreHints(Set<Hint> hints){
         this.hintLog.restore(hints);
     }
 
+    /**
+     * Ripristina l'arma equipaggiata durante il caricamento
+     * di una partita salvata.
+     *
+     * @param weapon arma da ripristinare
+     */
+    public void restoreWeapon(Weapon weapon){
+        this.equippedWeapon = weapon;
+    }
+
+    /**
+     * Ripristina la salute del giocatore.
+     *
+     * Utilizzato durante il caricamento di una partita salvata.
+     *
+     * @param health salute da assegnare
+     */
+    public void restoreHealth(int health){
+        super.setHealth(health);
+    }
+
+    /**
+     * @return arma attualmente equipaggiata
+     */
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
     }
 
-    public void restoreWeapon(Weapon weapon) {
-        this.equippedWeapon = weapon;
-    }
-
-    public Position getPosition() {
+    /**
+     * @return posizione corrente del giocatore
+     */
+    public Position getPosition(){
         return position;
     }
 
-    public HintLog getHintLog() {
+    /**
+     * @return registro degli indizi ottenuti
+     */
+    public HintLog getHintLog(){
         return hintLog;
     }
+
 }

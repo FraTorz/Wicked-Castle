@@ -13,12 +13,10 @@ public class TileFactory {
 
     private final int tileSize;
     private final int overlaySize;
-    private final double translateXValue; // Calcolato proporzionalmente per il posizionamento delle icone
 
     public TileFactory(int tileSize, int overlaySize) {
         this.tileSize = tileSize;
         this.overlaySize = overlaySize;
-        this.translateXValue = (double) tileSize * 12 / 128;
     }
 
     public StackPane createTile(BaseTileType base, List<SpriteProvider> overlays) {
@@ -60,7 +58,6 @@ public class TileFactory {
         StackPane.setAlignment(hbox, Pos.CENTER);
         tile.getChildren().add(hbox);
     }
-
 
     private ImageView createImage(String path, int size) {
         ImageView imageView = new ImageView(

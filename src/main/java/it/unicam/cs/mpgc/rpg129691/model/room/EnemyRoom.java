@@ -22,10 +22,6 @@ public class EnemyRoom implements Room{
         );
     }
 
-    public Enemy getEnemy() {
-        return enemy;
-    }
-
     @Override
     public Optional<SpriteProvider> getOverlaySprite() {
         return Optional.of(enemy);

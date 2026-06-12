@@ -1,11 +1,9 @@
 package it.unicam.cs.mpgc.rpg129691.ui.render;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.GameEngine;
-import it.unicam.cs.mpgc.rpg129691.model.game.GameSession;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.map.DungeonMap;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
-import it.unicam.cs.mpgc.rpg129691.model.room.Room;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -20,107 +18,108 @@ import java.util.Map;
 
 public class MapRenderer {
 
-    private static GameEngine game;
-    private static TileFactory tileFactory;
+    private static final int VIEWPORT_SIZE = 3;
     private static final int TILE_SIZE_VIEWPORT = 128;
     private static final int OVERLAY_SIZE_VIEWPORT = 64;
     private static final int TILE_SIZE_FULLMAP = 64;
     private static final int OVERLAY_SIZE_FULLMAP = 24;
+    private static final Duration TOOLTIP_DELAY = Duration.millis(100);
 
-    public static void renderViewPort(GridPane mapGrid){
-        game = GameSession.getInstance().getGame();
-        tileFactory = new TileFactory(TILE_SIZE_VIEWPORT, OVERLAY_SIZE_VIEWPORT);
+    public static void renderViewPort(GridPane mapGrid, GameEngine game){
         mapGrid.getChildren().clear();
-        setupGrid(mapGrid, 3, TILE_SIZE_VIEWPORT);
+        setupGrid(mapGrid, VIEWPORT_SIZE, TILE_SIZE_VIEWPORT);
+        TileFactory tileFactory = new TileFactory(TILE_SIZE_VIEWPORT, OVERLAY_SIZE_VIEWPORT);
         Position player = game.getPlayer().getPosition();
-        int playerRow = player.getRow();
-        int playerCol = player.getColumn();
-        for (int r = -1; r <= 1; r++) {
-            for (int c = -1; c <= 1; c++) {
-                int worldRow = playerRow + r;
-                int worldCol = playerCol + c;
-                Position pos = new Position(worldRow, worldCol);
-                BaseTileType base = getBaseTileType(pos);
-                List<SpriteProvider> overlays = getOverlaysFor(pos);
-                StackPane tile = tileFactory.createTile(base, overlays);
-                setTileSize(tile, TILE_SIZE_VIEWPORT);
-                mapGrid.add(tile, c + 1, r + 1);
+        int radius = VIEWPORT_SIZE / 2;
+        int playerRow = player.getRow(), playerCol = player.getColumn();
+        for (int r = -radius; r <= radius; r++) {
+            for (int c = -radius; c <= radius; c++) {
+                Position pos = new Position(playerRow + r, playerCol + c);
+                StackPane tile = createTile(game, tileFactory, pos, false);
+                mapGrid.add(tile, c + radius, r + radius);
             }
         }
     }
 
-    public static void renderFullMap(GridPane mapGrid){
-        game = GameSession.getInstance().getGame();
-        tileFactory = new TileFactory(TILE_SIZE_FULLMAP, OVERLAY_SIZE_FULLMAP);
+    public static void renderFullMap(GridPane mapGrid, GameEngine game){
         mapGrid.getChildren().clear();
         int size = game.getMap().getSize();
         setupGrid(mapGrid, size, TILE_SIZE_FULLMAP);
-        Map<Position, Hint> hintMap = new HashMap<>();
-        for (Hint hint : game.getPlayer().getHintLog().getHints()) {
-            hintMap.put(hint.getSourcePosition(), hint);
-        }
+        TileFactory tileFactory = new TileFactory(TILE_SIZE_FULLMAP, OVERLAY_SIZE_FULLMAP);
+        Map<Position, Hint> hintMap = buildHintMap(game);
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 Position pos = new Position(row, col);
-                BaseTileType base = getBaseTileType(pos);
-                List<SpriteProvider> overlays = getOverlaysFor(pos);
-                if(hintMap.containsKey(pos) && !pos.equals(game.getPlayer().getPosition()))
-                    overlays.add(FixedSprite.HINT);
-                StackPane tile = tileFactory.createTile(base, overlays);
-                setTileSize(tile, TILE_SIZE_FULLMAP);
-                if(hintMap.containsKey(pos)) installTooltip(tile, hintMap.get(pos).getMessage());
+                Hint hint = hintMap.get(pos);
+                boolean isHintPosition = hint != null && !pos.equals(game.getPlayer().getPosition());
+                StackPane tile = createTile(game, tileFactory, pos, isHintPosition);
+                if (isHintPosition) installTooltip(tile, hint.getMessage());
                 mapGrid.add(tile, col, row);
             }
         }
     }
 
-    private static BaseTileType getBaseTileType(Position pos) {
-        DungeonMap map = game.getMap();
+    private static Map<Position, Hint> buildHintMap(GameEngine game) {
+        Map<Position, Hint> hintMap = new HashMap<>();
+        for (Hint hint : game.getPlayer().getHintLog().getHints()) {
+            hintMap.put(hint.getSourcePosition(), hint);
+        }
+        return hintMap;
+    }
+
+    private static StackPane createTile(GameEngine game, TileFactory tileFactory, Position pos, boolean isHintPosition) {
+        BaseTileType base = getBaseTileType(game.getMap(), pos);
+        List<SpriteProvider> overlays = getOverlaysFor(game, pos);
+        if (isHintPosition) overlays.add(FixedSprite.HINT);
+        return tileFactory.createTile(base, overlays);
+    }
+
+    private static BaseTileType getBaseTileType(DungeonMap map, Position pos) {
         if (!map.isInside(pos)) return BaseTileType.WALL;
         if (!map.isVisited(pos)) return BaseTileType.UNKNOWN;
         return BaseTileType.FLOOR;
     }
 
-    private static List<SpriteProvider> getOverlaysFor(Position pos) {
+    private static List<SpriteProvider> getOverlaysFor(GameEngine game, Position pos) {
         List<SpriteProvider> overlays = new ArrayList<>();
         DungeonMap map = game.getMap();
         boolean isPlayerPosition = pos.equals(game.getPlayer().getPosition());
-        if(!map.isInside(pos)) return overlays;
-        if (!map.isVisited(pos) && !isPlayerPosition) return overlays;
+        boolean visible = map.isVisited(pos) || isPlayerPosition;
+        if(!map.isInside(pos) || !visible) return overlays;
         if (isPlayerPosition) overlays.add(game.getPlayer());
-        Room room = map.getRoom(pos);
-        room.getOverlaySprite().ifPresent(overlays::add);
+        map.getRoom(pos).getOverlaySprite().ifPresent(overlays::add);
         return overlays;
     }
-
 
     private static void setupGrid(GridPane mapGrid, int size, int tileSize) {
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
         for (int i = 0; i < size; i++) {
-            ColumnConstraints col = new ColumnConstraints(tileSize);
-            RowConstraints row = new RowConstraints(tileSize);
-            col.setMinWidth(tileSize);
-            col.setPrefWidth(tileSize);
-            col.setMaxWidth(tileSize);
-            row.setMinHeight(tileSize);
-            row.setPrefHeight(tileSize);
-            row.setMaxHeight(tileSize);
-            mapGrid.getColumnConstraints().add(col);
-            mapGrid.getRowConstraints().add(row);
+            mapGrid.getColumnConstraints().add(createColumn(tileSize));
+            mapGrid.getRowConstraints().add(createRow(tileSize));
         }
     }
 
-    private static void setTileSize(StackPane tile, int size){
-        tile.setMinSize(size, size);
-        tile.setPrefSize(size, size);
-        tile.setMaxSize(size, size);
+    private static ColumnConstraints createColumn(int size){
+        ColumnConstraints col = new ColumnConstraints(size);
+        col.setMinWidth(size);
+        col.setPrefWidth(size);
+        col.setMaxWidth(size);
+        return col;
+    }
+
+    private static RowConstraints createRow(int size){
+        RowConstraints row = new RowConstraints(size);
+        row.setMinHeight(size);
+        row.setPrefHeight(size);
+        row.setMaxHeight(size);
+        return row;
     }
 
     private static void installTooltip(StackPane tile, String message){
         Tooltip tooltip = new Tooltip(message);
         tooltip.getStyleClass().add("custom-tooltip");
         Tooltip.install(tile, tooltip);
-        tooltip.setShowDelay(Duration.millis(100));
+        tooltip.setShowDelay(TOOLTIP_DELAY);
     }
 }

@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
 import it.unicam.cs.mpgc.rpg129691.model.combat.CombatResult;
-import it.unicam.cs.mpgc.rpg129691.model.entity.enemy.Enemy;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.hint.HintGenerator;
 import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
@@ -17,10 +16,10 @@ public class GameEngine {
     private final HintGenerator hintGenerator;
     private GameState gameState;
 
-    public GameEngine(DungeonMap map, Player player, GameRandom random) {
+    public GameEngine(DungeonMap map, Player player, CombatSystem combatSystem) {
         this.map = map;
         this.player = player;
-        this.combatSystem = new CombatSystem(random);
+        this.combatSystem = combatSystem;
         this.hintGenerator = new HintGenerator();
         this.gameState = GameState.RUNNING;
     }

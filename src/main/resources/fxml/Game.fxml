@@ -15,7 +15,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="600.0" spacing="50.0">
                <children>
-                  <Button fx:id="mapButton" mnemonicParsing="false" onAction="#handleMap" text="Visualizza Mappa">
+                  <Button mnemonicParsing="false" onAction="#handleMap" text="Visualizza Mappa">
                      <font>
                         <Font size="20.0" />
                      </font></Button>
