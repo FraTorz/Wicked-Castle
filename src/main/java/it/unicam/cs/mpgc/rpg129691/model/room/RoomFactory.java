@@ -5,12 +5,33 @@ import it.unicam.cs.mpgc.rpg129691.model.game.Difficulty;
 import it.unicam.cs.mpgc.rpg129691.model.game.GameRandom;
 import it.unicam.cs.mpgc.rpg129691.model.item.WeaponFactory;
 
+/**
+ * Factory responsabile della creazione delle stanze del dungeon.
+ *
+ * La tipologia di stanza viene determinata in modo probabilistico
+ * in base alla difficoltà del gioco.
+ *
+ * Dipende da:
+ * <ul>
+ *     <li>GameRandom per la randomizzazione</li>
+ *     <li>Difficulty per le probabilità e parametri bilanciamento</li>
+ *     <li>WeaponFactory per generare loot</li>
+ *     <li>EnemyFactory per generare nemici</li>
+ * </ul>
+ */
 public class RoomFactory {
+
     private final GameRandom random;
     private final Difficulty difficulty;
     private final WeaponFactory weaponFactory;
     private final EnemyFactory enemyFactory;
 
+    /**
+     * Crea una RoomFactory con i parametri di gioco.
+     *
+     * @param random generatore casuale
+     * @param difficulty difficoltà del gioco
+     */
     public RoomFactory(GameRandom random, Difficulty difficulty) {
         this.random = random;
         this.difficulty = difficulty;
@@ -18,6 +39,20 @@ public class RoomFactory {
         this.enemyFactory = new EnemyFactory(random);
     }
 
+    /**
+     * Genera una stanza casuale in base alle probabilità della difficoltà.
+     *
+     * L'ordine di generazione è:
+     * <ol>
+     *     <li>EmptyRoom</li>
+     *     <li>HealingRoom</li>
+     *     <li>TrapRoom</li>
+     *     <li>TreasureRoom</li>
+     *     <li>EnemyRoom (fallback)</li>
+     * </ol>
+     *
+     * @return stanza generata casualmente
+     */
     public Room createRandomRoom() {
         int value = random.nextInt(100);
         int threshold = difficulty.getEmptyProbability();

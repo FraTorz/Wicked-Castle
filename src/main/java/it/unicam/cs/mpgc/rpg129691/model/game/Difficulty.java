@@ -1,5 +1,17 @@
 package it.unicam.cs.mpgc.rpg129691.model.game;
 
+/**
+ * Definisce i livelli di difficoltà disponibili nel gioco.
+ *
+ * Ogni livello configura:
+ * <ul>
+ *     <li>dimensione della mappa</li>
+ *     <li>probabilità di generazione delle stanze</li>
+ *     <li>quantità di cura ottenibile</li>
+ *     <li>danni inflitti dalle trappole</li>
+ *     <li>distanza minima dell'uscita dalla posizione iniziale</li>
+ * </ul>
+ */
 public enum Difficulty {
 
     EASY(
@@ -48,6 +60,14 @@ public enum Difficulty {
     private final int trapDamage;
     private final int minExitDistance;
 
+    /**
+     * Crea una configurazione di difficoltà.
+     *
+     * Le probabilità delle varie tipologie di stanza devono
+     * sempre sommare a 100.
+     *
+     * @throws IllegalArgumentException se la somma delle probabilità è diversa da 100
+     */
     Difficulty(int mapSize, int emptyProbability, int healingProbability,
                int trapProbability, int treasureProbability, int enemyProbability,
                int healingAmount, int trapDamage, int minExitDistance) {
@@ -60,46 +80,40 @@ public enum Difficulty {
         this.healingAmount = healingAmount;
         this.trapDamage = trapDamage;
         this.minExitDistance = minExitDistance;
-        int total = emptyProbability + healingProbability + trapProbability
-                + treasureProbability + enemyProbability;
-        if(total != 100) {
-            throw new IllegalArgumentException("The probabilities must sum to 100");
-        }
+        validateProbabilities(emptyProbability, healingProbability, trapProbability,
+                treasureProbability, enemyProbability);
     }
 
-    public int getMapSize() {
+    private static void validateProbabilities(int empty, int healing, int trap, int treasure, int enemy) {
+        int total = empty + healing + trap + treasure + enemy;
+        if (total != 100) throw new IllegalArgumentException("The probabilities must sum to 100");
+    }
+
+    public int getMapSize(){
         return mapSize;
     }
-
-    public int getEmptyProbability() {
+    public int getEmptyProbability(){
         return emptyProbability;
     }
-
-    public int getHealingProbability() {
+    public int getHealingProbability(){
         return healingProbability;
     }
-
-    public int getTrapProbability() {
+    public int getTrapProbability(){
         return trapProbability;
     }
-
-    public int getTreasureProbability() {
+    public int getTreasureProbability(){
         return treasureProbability;
     }
-
-    public int getEnemyProbability() {
+    public int getEnemyProbability(){
         return enemyProbability;
     }
-
-    public int getHealingAmount() {
+    public int getHealingAmount(){
         return healingAmount;
     }
-
-    public int getTrapDamage() {
+    public int getTrapDamage(){
         return trapDamage;
     }
-
-    public int getMinExitDistance() {
+    public int getMinExitDistance(){
         return minExitDistance;
     }
 }

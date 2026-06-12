@@ -153,6 +153,7 @@ public class GameController {
             message = "Sei sicuro di voler uscire dalla partita?";
         }
         if (AlertUtils.showConfirmation(title, message)) {
+            GameSession.getInstance().clear();
             SceneManager.switchScene("/fxml/MainMenu.fxml");
         }
     }
