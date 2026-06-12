@@ -78,6 +78,7 @@ public abstract class Entity implements SpriteProvider {
      * @param amount quantità da aggiungere
      */
     protected void increaseHealth(int amount){
+        if(amount <= 0) return;
         this.health += amount;
     }
 
