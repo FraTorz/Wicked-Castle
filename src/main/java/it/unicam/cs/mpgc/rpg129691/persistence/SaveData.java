@@ -6,6 +6,15 @@ import it.unicam.cs.mpgc.rpg129691.model.map.Position;
 
 import java.util.Set;
 
+/**
+ * Rappresenta i dati serializzabili di una partita salvata.
+ *
+ * Questa classe funge da DTO (Data Transfer Object) tra il sistema di gioco
+ * e il layer di persistenza.
+ *
+ * Contiene tutte le informazioni necessarie per ricostruire
+ * lo stato completo della partita.
+ */
 public class SaveData {
 
     private long seed;
@@ -18,67 +27,102 @@ public class SaveData {
     private String saveName;
     private String saveTime;
 
+    /**
+     * @return seed utilizzato per la generazione del dungeon
+     */
     public long getSeed() {
         return seed;
     }
+
     public void setSeed(long seed) {
         this.seed = seed;
     }
 
+    /**
+     * @return difficoltà della partita salvata
+     */
     public Difficulty getDifficulty() {
         return difficulty;
     }
+
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
+    /**
+     * @return punti vita attuali del giocatore
+     */
     public int getPlayerHealth() {
         return playerHealth;
     }
+
     public void setPlayerHealth(int playerHealth) {
         this.playerHealth = playerHealth;
     }
 
+    /**
+     * @return posizione del giocatore al momento del salvataggio
+     */
     public Position getPlayerPosition() {
         return playerPosition;
     }
+
     public void setPlayerPosition(Position playerPosition) {
         this.playerPosition = playerPosition;
     }
 
+    /**
+     * @return nome dell'arma equipaggiata
+     */
     public String getEquippedWeapon() {
         return equippedWeapon;
     }
+
     public void setEquippedWeapon(String equippedWeapon) {
         this.equippedWeapon = equippedWeapon;
     }
 
+    /**
+     * @return insieme delle posizioni già visitate nella mappa
+     */
     public Set<Position> getVisitedPositions() {
         return visitedPositions;
     }
+
     public void setVisitedPositions(Set<Position> visitedPositions) {
         this.visitedPositions = visitedPositions;
     }
 
+    /**
+     * @return insieme degli indizi raccolti durante la partita
+     */
     public Set<Hint> getHints() {
         return hints;
     }
+
     public void setHints(Set<Hint> hints) {
         this.hints = hints;
     }
 
+    /**
+     * @return nome del salvataggio
+     */
     public String getSaveName() {
         return saveName;
     }
+
     public void setSaveName(String saveName) {
         this.saveName = saveName;
     }
 
+    /**
+     * @return timestamp del salvataggio
+     */
     public String getSaveTime() {
         return saveTime;
     }
+
     public void setSaveTime(String saveTime) {
         this.saveTime = saveTime;
     }
-
 }
