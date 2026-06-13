@@ -115,12 +115,17 @@ public class GameController {
     /**
      * Aggiorna completamente l'interfaccia grafica della partita.
      *
-     * Sincronizza:
+     * Prima sincronizza lo stato visivo del giocatore con lo stato
+     * corrente della partita, quindi aggiorna tutti gli elementi
+     * dell'interfaccia utente.
+     *
+     * In particolare aggiorna:
      * <ul>
-     *     <li>log eventi</li>
-     *     <li>stato dei pulsanti</li>
+     *     <li>stato visivo del giocatore</li>
+     *     <li>log degli eventi</li>
+     *     <li>stato dei pulsanti disponibili</li>
      *     <li>etichette informative</li>
-     *     <li>vista della mappa</li>
+     *     <li>viewport della mappa</li>
      * </ul>
      */
     private void refresh(){
@@ -131,6 +136,17 @@ public class GameController {
         refreshViewPort();
     }
 
+    /**
+     * Aggiorna lo stato visivo del giocatore in base allo stato
+     * corrente della partita.
+     *
+     * Questo metodo appartiene al layer di presentazione e traduce
+     * il {@code GameState} del modello nel corrispondente
+     * {@link PlayerVisualState} utilizzato dal sistema di rendering.
+     *
+     * La logica di gioco non viene modificata: viene aggiornato
+     * esclusivamente l'aspetto grafico del personaggio.
+     */
     private void updatePlayerVisualState() {
         Player player = game.getPlayer();
         switch (game.getGameState()) {
