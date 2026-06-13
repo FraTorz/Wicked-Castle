@@ -1,9 +1,11 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
+import it.unicam.cs.mpgc.rpg129691.model.entity.Player;
 import it.unicam.cs.mpgc.rpg129691.model.game.*;
 import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.persistence.GamePersistenceService;
 import it.unicam.cs.mpgc.rpg129691.ui.render.MapRenderer;
+import it.unicam.cs.mpgc.rpg129691.ui.render.PlayerVisualState;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.SceneManager;
 import javafx.fxml.FXML;
@@ -122,10 +124,20 @@ public class GameController {
      * </ul>
      */
     private void refresh(){
+        updatePlayerVisualState();
         refreshLogFlow();
         refreshButtons();
         refreshLabels();
         refreshViewPort();
+    }
+
+    private void updatePlayerVisualState() {
+        Player player = game.getPlayer();
+        switch (game.getGameState()) {
+            case PLAYER_WON -> player.setVisualState(PlayerVisualState.WIN);
+            case PLAYER_LOST -> player.setVisualState(PlayerVisualState.DEAD);
+            default -> player.setVisualState(PlayerVisualState.NORMAL);
+        }
     }
 
     /**

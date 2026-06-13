@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.model.hint.HintLog;
 import it.unicam.cs.mpgc.rpg129691.model.item.*;
 import it.unicam.cs.mpgc.rpg129691.model.map.Position;
+import it.unicam.cs.mpgc.rpg129691.ui.render.PlayerVisualState;
 
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class Player extends Entity {
     private Position position;
     private Weapon equippedWeapon;
     private final HintLog hintLog;
+    private PlayerVisualState visualState = PlayerVisualState.NORMAL;
 
     /**
      * Crea un nuovo giocatore.
@@ -65,8 +67,12 @@ public class Player extends Entity {
      * @return path della risorsa grafica del giocatore
      */
     @Override
-    public String getSpritePath(){
-        return "/img/hero.png";
+    public String getSpritePath() {
+        return switch (visualState) {
+            case WIN -> "/img/hero_win.png";
+            case DEAD -> "/img/hero_dead.png";
+            default -> "/img/hero.png";
+        };
     }
 
     /**
@@ -185,4 +191,12 @@ public class Player extends Entity {
         return hintLog;
     }
 
+
+    public PlayerVisualState getVisualState() {
+        return visualState;
+    }
+
+    public void setVisualState(PlayerVisualState visualState) {
+        this.visualState = visualState;
+    }
 }
