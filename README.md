@@ -1,6 +1,6 @@
-# 📌 RPG Escape Dungeon
+# 📌 Wicked Castle
 
-RPG Escape Dungeon è un gioco di ruolo single-player sviluppato in Java e JavaFX.
+Wicked Castle è un gioco di ruolo single-player sviluppato in Java e JavaFX.
 
 Il giocatore esplora un dungeon generato proceduralmente, affronta nemici, raccoglie indizi sulla posizione dell'uscita e cerca di fuggire prima di essere sconfitto.
 
@@ -17,7 +17,7 @@ Il giocatore esplora un dungeon generato proceduralmente, affronta nemici, racco
 
 ```bash
 git clone <url-del-repository>
-cd RPGEscapeDungeon
+cd WickedCastle
 ```
 
 ### Build del progetto
