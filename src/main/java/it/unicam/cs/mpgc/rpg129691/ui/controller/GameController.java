@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg129691.ui.controller;
 
 import it.unicam.cs.mpgc.rpg129691.model.game.*;
+import it.unicam.cs.mpgc.rpg129691.model.hint.Hint;
 import it.unicam.cs.mpgc.rpg129691.persistence.GamePersistenceService;
 import it.unicam.cs.mpgc.rpg129691.ui.render.MapRenderer;
 import it.unicam.cs.mpgc.rpg129691.ui.utils.AlertUtils;
@@ -13,6 +14,24 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * Controller principale della scena di gioco.
+ *
+ * Gestisce:
+ * <ul>
+ *     <li>movimento del player</li>
+ *     <li>rendering della mappa</li>
+ *     <li>log eventi di gioco</li>
+ *     <li>interazione con UI (salvataggi, combattimenti, mappe)</li>
+ * </ul>
+ *
+ * È il punto centrale tra:
+ * <ul>
+ *     <li>GameEngine (logica)</li>
+ *     <li>UI JavaFX</li>
+ *     <li>Sistema di persistenza</li>
+ * </ul>
+ */
 public class GameController {
 
     private final GamePersistenceService persistence = new GamePersistenceService();
@@ -37,18 +56,29 @@ public class GameController {
     @FXML private Button saveButton;
     @FXML private Button endButton;
 
+    /**
+     * Inizializza la partita corrente dalla {@link GameSession}.
+     *
+     * Aggiorna UI e stato interno del controller.
+     */
     public void initializeGame() {
         this.game = GameSession.getInstance().getGame();
         refreshLabels();
         refreshViewPort();
     }
 
+    /**
+     * Inizializza una nuova partita e stampa i messaggi iniziali nel log.
+     */
     public void initializeNewGame() {
         initializeGame();
         appendLog("🎮", "Partita iniziata", "#FFFFFF");
         appendLog("•", "Ti trovi nella stanza iniziale.", "#FFFFFF");
     }
 
+    /**
+     * Inizializza una partita caricata da salvataggio.
+     */
     public void initializeLoadedGame() {
         initializeGame();
         appendLog("💾", "Partita caricata con successo.", "#FFFFFF");
@@ -68,11 +98,29 @@ public class GameController {
         move(Direction.WEST);
     }
 
+    /**
+     * Esegue il movimento del giocatore nella direzione indicata.
+     *
+     * Aggiorna lo stato del gioco e rigenera la UI.
+     *
+     * @param direction direzione del movimento
+     */
     private void move(Direction direction) {
         gameEvent = game.movePlayer(direction);
         refresh();
     }
 
+    /**
+     * Aggiorna completamente l'interfaccia grafica della partita.
+     *
+     * Sincronizza:
+     * <ul>
+     *     <li>log eventi</li>
+     *     <li>stato dei pulsanti</li>
+     *     <li>etichette informative</li>
+     *     <li>vista della mappa</li>
+     * </ul>
+     */
     private void refresh(){
         refreshLogFlow();
         refreshButtons();
@@ -80,17 +128,36 @@ public class GameController {
         refreshViewPort();
     }
 
+    /**
+     * Aggiorna il flusso del log eventi.
+     *
+     * Inserisce un separatore e stampa:
+     * <ul>
+     *     <li>eventuale stato della partita</li>
+     *     <li>ultimo evento di gioco</li>
+     * </ul>
+     */
     private void refreshLogFlow() {
         logSeparator();
         logGameState();
         logGameEventMessage();
     }
 
+    /**
+     * Inserisce un separatore visivo nel log degli eventi.
+     *
+     * Utilizzato per migliorare la leggibilità della cronologia eventi.
+     */
     private void logSeparator(){
         eventLogFlow.getChildren().addFirst(createDottedSeparator());
         eventLogFlow.getChildren().addFirst(new Text("\n"));
     }
 
+    /**
+     * Registra nel log lo stato corrente della partita.
+     *
+     * Mostra messaggi di vittoria o sconfitta se la partita è terminata.
+     */
     private void logGameState() {
         switch (game.getGameState()) {
             case PLAYER_WON -> appendLog("🎉", "Hai trovato l'uscita! Hai vinto!", "#FFD700");
@@ -99,6 +166,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Registra nel log il messaggio relativo all'ultimo evento di gioco.
+     *
+     * Se presente, include anche un eventuale {@link Hint} ottenuto dal combattimento.
+     * Il messaggio viene formattato in base al tipo di evento.
+     */
     private void logGameEventMessage() {
         gameEvent.getHint().ifPresent(h -> {
             appendLog("🔎",
@@ -117,11 +190,22 @@ public class GameController {
         }
     }
 
+    /**
+     * Aggiorna lo stato dei pulsanti della UI.
+     *
+     * Disabilita i controlli se la partita non è più in corso
+     * e mostra il pulsante dei dettagli del combattimento se disponibile.
+     */
     private void refreshButtons() {
         if(game.getGameState() != GameState.RUNNING) disableInput();
         combatDetailsButton.setVisible(gameEvent.getCombatResult().isPresent());
     }
 
+    /**
+     * Disabilita tutti i controlli di movimento e interazione.
+     *
+     * Utilizzato quando la partita è terminata.
+     */
     private void disableInput() {
         northButton.setDisable(true);
         southButton.setDisable(true);
@@ -131,16 +215,37 @@ public class GameController {
         endButton.setText("Torna al menu");
     }
 
+    /**
+     * Aggiorna le etichette informative del giocatore.
+     *
+     * Mostra:
+     * <ul>
+     *     <li>difficoltà corrente</li>
+     *     <li>punti vita del giocatore</li>
+     *     <li>arma equipaggiata</li>
+     * </ul>
+     */
     private void refreshLabels() {
         difficultyLabel.setText(game.getMap().getDifficulty().toString());
         hpLabel.setText(String.valueOf(game.getPlayer().getHealth()));
         weaponLabel.setText(game.getPlayer().getEquippedWeapon().getName());
     }
 
+    /**
+     * Aggiorna la visualizzazione della mappa centrata sul giocatore.
+     *
+     * Utilizza {@link MapRenderer} per disegnare la viewport.
+     */
     private void refreshViewPort(){
         MapRenderer.renderViewPort(mapGrid, game);
     }
 
+    /**
+     * Gestisce la chiusura della partita.
+     *
+     * Se la partita è in corso richiede conferma all'utente.
+     * Altrimenti termina direttamente la sessione.
+     */
     @FXML
     private void handleEndGame() {
         String title;
@@ -158,12 +263,20 @@ public class GameController {
         }
     }
 
+    /**
+     * Apre una finestra popup contenente la mappa completa del dungeon.
+     */
     @FXML
     private void handleMap() {
         FXMLLoader loader = SceneManager.loadFXML("/fxml/Map.fxml");
         SceneManager.showPopup(loader.getRoot(), "Mappa");
     }
 
+    /**
+     * Mostra i dettagli dell'ultimo combattimento in una finestra popup.
+     *
+     * Se presente, passa il risultato del combattimento al controller dedicato.
+     */
     @FXML
     private void showCombatDetails() {
         FXMLLoader loader = SceneManager.loadFXML("/fxml/CombatSummary.fxml");
@@ -172,6 +285,12 @@ public class GameController {
         SceneManager.showPopup(loader.getRoot(), "Dettagli combattimento");
     }
 
+    /**
+     * Avvia il processo di salvataggio della partita corrente.
+     *
+     * Richiede un nome di salvataggio e gestisce errori
+     * come duplicati o limite massimo raggiunto.
+     */
     @FXML
     private void handleSaveGame() {
         String name = askSaveName();
@@ -179,6 +298,11 @@ public class GameController {
         saveGame(name);
     }
 
+    /**
+     * Richiede all'utente il nome del salvataggio tramite dialog.
+     *
+     * @return nome inserito oppure null se annullato
+     */
     private String askSaveName() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Salvataggio partita");
@@ -187,6 +311,12 @@ public class GameController {
         return dialog.showAndWait().orElse(null);
     }
 
+    /**
+     * Valida il nome del salvataggio inserito dall'utente.
+     *
+     * @param name nome da validare
+     * @return true se il nome è valido
+     */
     private boolean isValidSaveName(String name) {
         if (name == null) return false;
         if (name.isBlank()) {
@@ -196,6 +326,18 @@ public class GameController {
         return true;
     }
 
+    /**
+     * Esegue il salvataggio della partita corrente.
+     *
+     * Gestisce:
+     * <ul>
+     *     <li>nome duplicato</li>
+     *     <li>limite massimo di salvataggi</li>
+     *     <li>errori generici di persistenza</li>
+     * </ul>
+     *
+     * @param name nome del salvataggio
+     */
     private void saveGame(String name) {
         try {
             persistence.saveGame(game, name);
@@ -212,10 +354,21 @@ public class GameController {
         }
     }
 
+    /**
+     * Mostra un messaggio di conferma per il salvataggio completato.
+     */
     private void showSaveSuccess() {
         AlertUtils.showInfo("OK", "Salvataggio completato");
     }
 
+    /**
+     * Gestisce il caso in cui il limite massimo di salvataggi sia stato raggiunto.
+     *
+     * Permette all'utente di eliminare un vecchio salvataggio
+     * e riprovare a salvare la partita corrente.
+     *
+     * @param name nome del nuovo salvataggio
+     */
     private void handleSaveLimit(String name) {
         SaveManagementController controller = handleSaveLimitReached();
         if (!controller.isDeletedSomething()) {
@@ -230,6 +383,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Apre la finestra di gestione dei salvataggi quando viene raggiunto il limite massimo.
+     *
+     * @return controller della finestra di gestione salvataggi
+     */
     private SaveManagementController handleSaveLimitReached(){
         AlertUtils.showWarning("Attenzione", "Limite salvataggi raggiunto. " +
                 "Elimina almeno una partita per salvare quella corrente.");
@@ -240,6 +398,19 @@ public class GameController {
         return controller;
     }
 
+    /**
+     * Aggiunge un messaggio al log eventi della partita.
+     *
+     * Il messaggio viene formattato con:
+     * <ul>
+     *     <li>icona emoji</li>
+     *     <li>testo colorato</li>
+     * </ul>
+     *
+     * @param emoji icona rappresentativa dell'evento
+     * @param message testo del messaggio
+     * @param colorHex colore del testo in formato esadecimale
+     */
     private void appendLog(String emoji, String message, String colorHex) {
         Text emojiText = new Text(emoji + " ");
         emojiText.setStyle("-fx-font-family: 'Segoe UI Emoji'; -fx-font-size: 18px;");
@@ -250,6 +421,11 @@ public class GameController {
         logScrollPane.setVvalue(0.0);
     }
 
+    /**
+     * Crea una linea tratteggiata utilizzata come separatore nel log eventi.
+     *
+     * @return nodo Line configurato graficamente
+     */
     private Line createDottedSeparator() {
         Line line = new Line();
         line.endXProperty().bind(eventLogFlow.widthProperty().subtract(20)); // Sottrae 20px per tenere conto del padding
