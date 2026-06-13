@@ -25,7 +25,6 @@ public class CombatSummaryController {
 
     @FXML public Button backButton;
     @FXML public Label enemyTopLabel;
-    @FXML public ImageView playerImageView;
     @FXML public ImageView enemyImageView;
     @FXML private Label enemyNameLabel;
     @FXML private Label turnsLabel;
@@ -70,13 +69,10 @@ public class CombatSummaryController {
         playerHpLabel.setText("HP finali eroe: " + combatResult.getPlayerFinalHealth());
         winnerLabel.setText(combatResult.getWinnerName());
         enemyTopLabel.setText(enemyName);
-        updateSprites();
+        updateSprite();
     }
 
-    private void updateSprites() {
-        playerImageView.setImage(new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream("/img/hero.png")))
-        );
+    private void updateSprite() {
         enemyImageView.setImage(new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream(
                         combatResult.getEnemy().getSpritePath())

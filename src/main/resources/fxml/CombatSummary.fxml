@@ -29,7 +29,11 @@
       </HBox>
    </top>
    <left>
-      <ImageView fx:id="playerImageView" fitHeight="438.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fitHeight="438.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" >
+         <image>
+            <Image url="@/img/hero.png"/>
+         </image>
+      </ImageView>
    </left>
    <right>
       <ImageView fx:id="enemyImageView" fitHeight="438.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />

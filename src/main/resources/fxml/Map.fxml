@@ -19,7 +19,7 @@
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true">
          <content>
-            <StackPane alignment="CENTER">
+            <StackPane alignment="CENTER" styleClass="map-container">
                <children>
                   <GridPane fx:id="mapGrid" alignment="CENTER" />
                </children>
