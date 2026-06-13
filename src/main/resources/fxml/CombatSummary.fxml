@@ -10,7 +10,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="160.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="EROE">
+            <Label text="Eroe">
                <font>
                   <Font size="40.0" />
                </font>
@@ -20,7 +20,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="enemyTopLabel" layoutX="38.0" layoutY="10.0" text="NEMICO">
+            <Label fx:id="enemyTopLabel" layoutX="38.0" layoutY="10.0" text="Nemico">
                <font>
                   <Font size="40.0" />
                </font>
@@ -42,7 +42,7 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="showLogButton" mnemonicParsing="false" onAction="#handleShowCombatLog" prefHeight="44.0" prefWidth="270.0" text="Mostra log combattimento" textAlignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#handleShowCombatLog" prefHeight="44.0" prefWidth="270.0" text="Mostra log combattimento" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

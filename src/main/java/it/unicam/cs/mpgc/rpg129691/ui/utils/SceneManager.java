@@ -5,20 +5,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
- * Utility statica responsabile della gestione delle scene JavaFX.
+ * Utility statica responsabile della gestione delle scene JavaFX
+ * e dell'applicazione del tema grafico globale.
  *
- * Centralizza le operazioni di:
+ * <p>
+ * Questa classe centralizza tutte le operazioni legate alla UI,
+ * evitando duplicazione del codice nei controller.
+ * </p>
+ *
+ * <p>In particolare gestisce:</p>
  * <ul>
- *     <li>inizializzazione dello stage principale</li>
- *     <li>cambio scena dell'applicazione</li>
- *     <li>caricamento e visualizzazione di viste FXML</li>
+ *     <li>inizializzazione dello {@link javafx.stage.Stage} principale</li>
+ *     <li>transizione tra scene FXML</li>
+ *     <li>caricamento di viste e relativi controller</li>
+ *     <li>applicazione del foglio di stile globale (tema)</li>
  *     <li>apertura di finestre popup modali</li>
  * </ul>
  */
 public class SceneManager {
 
     private static Stage primaryStage;
+    /**
+     * Percorso del file CSS globale applicato a tutte le scene.
+     */
+    private static final String THEME = "/css/style.css";
 
     /**
      * Costruttore privato per impedire l'istanziazione
@@ -40,10 +53,14 @@ public class SceneManager {
     }
 
     /**
-     * Carica un file FXML e sostituisce la scena corrente.
+     * Sostituisce la scena corrente con una nuova scena caricata da FXML.
+     *
+     * <p>
+     * La nuova scena viene automaticamente inizializzata con il tema grafico
+     * definito in {@link #THEME}.
+     * </p>
      *
      * @param fxmlPath percorso della risorsa FXML da caricare
-     *
      * @throws RuntimeException se il file FXML non può essere caricato
      */
     public static void switchScene(String fxmlPath) {
@@ -56,15 +73,15 @@ public class SceneManager {
     }
 
     /**
-     * Carica un file FXML, sostituisce la scena corrente
-     * e restituisce il relativo FXMLLoader.
+     * Sostituisce la scena corrente e restituisce l'FXMLLoader associato.
      *
-     * Utile quando è necessario accedere al controller
+     * <p>
+     * Questo metodo è utile quando è necessario accedere al controller
      * della nuova scena dopo il caricamento.
+     * </p>
      *
      * @param fxmlPath percorso della risorsa FXML da caricare
      * @return FXMLLoader associato alla scena caricata
-     *
      * @throws RuntimeException se il file FXML non può essere caricato
      */
     public static FXMLLoader switchSceneAndGetLoader(String fxmlPath) {
@@ -80,12 +97,13 @@ public class SceneManager {
     /**
      * Carica un file FXML senza modificarne la scena corrente.
      *
-     * Utile per ottenere il controller associato oppure
-     * per preparare contenuti da visualizzare successivamente.
+     * <p>
+     * Utile per ottenere il controller associato oppure preparare
+     * contenuti da visualizzare in popup.
+     * </p>
      *
      * @param fxmlPath percorso della risorsa FXML da caricare
      * @return FXMLLoader già inizializzato
-     *
      * @throws RuntimeException se il file FXML non può essere caricato
      */
     public static FXMLLoader loadFXML(String fxmlPath) {
@@ -99,9 +117,12 @@ public class SceneManager {
     }
 
     /**
-     * Mostra una finestra popup modale.
+     * Mostra una finestra popup modale con il tema grafico applicato.
      *
-     * L'esecuzione viene sospesa fino alla chiusura della finestra.
+     * <p>
+     * L'esecuzione del thread JavaFX viene sospesa fino alla chiusura
+     * della finestra.
+     * </p>
      *
      * @param root nodo radice della finestra da mostrare
      * @param title titolo della finestra
@@ -109,7 +130,7 @@ public class SceneManager {
     public static void showPopup(Parent root, String title) {
         Stage stage = new Stage();
         stage.setTitle(title);
-        stage.setScene(new Scene(root));
+        stage.setScene(createScene(root));
         stage.setResizable(false);
         stage.showAndWait();
     }
@@ -141,13 +162,29 @@ public class SceneManager {
     }
 
     /**
-     * Imposta una nuova scena nello stage principale.
+     * Imposta una nuova scena nello stage principale applicando il tema globale.
      *
      * @param root nodo radice della scena da visualizzare
      */
     private static void setScene(Parent root) {
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(createScene(root));
         primaryStage.setResizable(false);
+    }
+
+    /**
+     * Crea una nuova scena JavaFX applicando automaticamente il tema grafico.
+     *
+     * @param root nodo radice della scena
+     * @return scena pronta per essere mostrata
+     */
+    private static Scene createScene(Parent root) {
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(
+                Objects.requireNonNull(
+                        SceneManager.class.getResource(THEME)
+                ).toExternalForm()
+        );
+        return scene;
     }
 
 }

@@ -28,7 +28,7 @@
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin></Button>
-      <Button onAction="#startMediumGame" prefHeight="44.0" prefWidth="83.0" text="Medio">
+      <Button onAction="#startMediumGame" prefHeight="44.0" prefWidth="96.0" text="Medio">
          <font>
             <Font size="20.0" />
          </font>

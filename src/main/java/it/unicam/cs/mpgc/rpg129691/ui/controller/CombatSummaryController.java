@@ -6,7 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 /**
  * Controller della finestra di riepilogo del combattimento.
@@ -20,6 +24,9 @@ import javafx.stage.Stage;
 public class CombatSummaryController {
 
     @FXML public Button backButton;
+    @FXML public Label enemyTopLabel;
+    @FXML public ImageView playerImageView;
+    @FXML public ImageView enemyImageView;
     @FXML private Label enemyNameLabel;
     @FXML private Label turnsLabel;
     @FXML private Label damageDealtLabel;
@@ -55,13 +62,28 @@ public class CombatSummaryController {
      * </ul>
      */
     private void updateView() {
-        enemyNameLabel.setText("Combattimento contro " + combatResult.getEnemy().getDisplayName());
+        String enemyName = combatResult.getEnemy().getDisplayName();
+        enemyNameLabel.setText("Combattimento contro " + enemyName);
         turnsLabel.setText("Turni: " + combatResult.getTurnCount());
         damageDealtLabel.setText("Danni inflitti: " + combatResult.getPlayerDamage());
         damageTakenLabel.setText("Danni subiti: " + combatResult.getEnemyDamage());
         playerHpLabel.setText("HP finali eroe: " + combatResult.getPlayerFinalHealth());
         winnerLabel.setText(combatResult.getWinnerName());
+        enemyTopLabel.setText(enemyName);
+        updateSprites();
     }
+
+    private void updateSprites() {
+        playerImageView.setImage(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/hero.png")))
+        );
+        enemyImageView.setImage(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(
+                        combatResult.getEnemy().getSpritePath())
+                )
+        ));
+    }
+
 
     /**
      * Apre la finestra con il log dettagliato del combattimento.
